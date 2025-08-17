@@ -1,0 +1,88 @@
+/* PersonalInfo Component Styles */
+
+/* Form Field Styling */
+.form-field {
+  height: 56px;
+}
+
+.form-field fieldset {
+  border-color: #79747E;
+}
+
+.form-field:hover fieldset {
+  border-color: #6750A4;
+}
+
+.form-field.Mui-focused fieldset {
+  border-color: #6750A4;
+}
+
+/* Select Field Styling */
+.select-field {
+  height: 56px;
+  width: 250px;
+}
+
+.select-field .MuiOutlinedInput-notchedOutline {
+  border-color: #79747E;
+}
+
+.select-field:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #6750A4;
+}
+
+.select-field.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #6750A4;
+}
+
+/* Input Label Styling */
+.input-label {
+  font-size: 12px;
+  color: #49454F;
+  background-color: #FEF7FF;
+  padding: 0 4px;
+  margin-bottom: 4px;
+}
+
+/* Gender Label Specific Styling */
+.gender-label {
+  font-size: 12px;
+  color: #49454F;
+  background-color: #FEF7FF;
+  padding: 0 4px;
+  margin-bottom: 4px;
+}
+
+/* Section Headers */
+.section-header {
+  font-weight: 500;
+  color: #3C2D63;
+  margin-bottom: 24px;
+}
+
+/* Main Title */
+.main-title {
+  font-weight: 500;
+  color: #4A4458;
+}
+
+/* Checkbox Styling */
+.checkbox-field {
+  color: #6750A4;
+}
+
+.checkbox-field.Mui-checked {
+  color: #6750A4;
+}
+
+/* Date Picker Caption */
+.date-caption {
+  color: #49454F;
+  margin-top: 4px;
+}
+
+/* Search Icon Styling */
+.search-icon {
+  color: #49454F;
+  margin-right: 8px;
+}
