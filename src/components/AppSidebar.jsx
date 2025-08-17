@@ -89,7 +89,7 @@ export function AppSidebar() {
             <PinSidebar />
           </div>
         ) : (
-          <div className="relative">
+          <div className="relative flex justify-center items-center">
             <div className="absolute top-2 right-2 z-10">
               <PinSidebar />
             </div>
@@ -97,7 +97,7 @@ export function AppSidebar() {
         )}
 
         {/* Logo section */}
-        <div className={`sidebar-logo border-b border-sidebar-border ${isCollapsed ? '' : 'p-6'}`}>
+        <div className={`sidebar-logo border-b border-sidebar-border ${isCollapsed ? 'mt-4' : 'p-6'}`}>
           <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
             <span className="font-bold text-lg text-sidebar-foreground">
               <img 

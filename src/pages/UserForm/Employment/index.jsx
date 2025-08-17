@@ -6,18 +6,54 @@ import {
   Paper,
   CardContent,
   CardHeader,
-  Divider,
-  Button
+  Divider
 } from '@mui/material'
-import { Row, Col } from 'reactstrap'
+import { Row, Col, Input, Label } from 'reactstrap'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import { CloudUpload } from '@mui/icons-material'
+import Upload from '../Svg/Upload.svg'
+import './index.css'
 
 const EmploymentDetails = () => {
   const [fromDate, setFromDate] = useState(null)
   const [toDate, setToDate] = useState(null)
+  const [selectedFiles, setSelectedFiles] = useState({
+    offerLetter: null,
+    paySlip: null,
+    resignation: null,
+    experienceLetter: null,
+    bankStatement: null,
+    employmentCheckResult: null,
+    employmentCertificate: null
+  })
+
+  const handleFileChange = (field, file) => {
+    setSelectedFiles(prev => ({
+      ...prev,
+      [field]: file
+    }))
+  }
+
+  const CustomFileUpload = ({ field, accept, id }) => {
+    return (
+      <div className="file-upload-container">
+        <Input
+          id={id}
+          type="file"
+          onChange={(e) => handleFileChange(field, e.target.files[0])}
+          accept={accept}
+          className="file-upload-input"
+        />
+        <Label 
+          for={id} 
+          className="btn btn-outline-secondary mb-0 file-upload-button file-upload-label"
+        >
+          Choose file
+        </Label>
+      </div>
+    )
+  }
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -354,283 +390,144 @@ const EmploymentDetails = () => {
             </Typography>
             
             {/* Offer Letter Upload */}
-            <Box sx={{ 
-              border: '1px solid #DDE2E5', 
-              borderRadius: 2, 
-              p: 3, 
-              mb: 2,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between'
-            }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <CloudUpload sx={{ fontSize: 48, color: '#5E6366' }} />
-                <Box>
-                  <Typography variant="h6" sx={{ fontWeight: 500, color: '#5E6366', mb: 1 }}>
+            <div className="upload-box">
+              <div className="upload-content">
+                <img src={Upload} alt="Upload" className="upload-icon" />
+                <div>
+                  <Typography variant="h6" className="upload-title">
                     Offer Letter
                   </Typography>
-                  <Typography variant="body2" sx={{ color: '#5E6366', fontWeight: 300 }}>
+                  <Typography variant="body2" className="upload-description">
                     Files Supported: JPEG, PDF and PNG (max size 2mb)
                   </Typography>
-                </Box>
-              </Box>
-              <Button
-                variant="contained"
-                sx={{
-                  bgcolor: '#000',
-                  color: '#fff',
-                  fontWeight: 600,
-                  px: 2.5,
-                  py: 1.25,
-                  borderRadius: 1,
-                  boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(103, 110, 118, 0.16), 0px 2px 5px 0px rgba(103, 110, 118, 0.08)',
-                  '&:hover': {
-                    bgcolor: '#333'
-                  }
-                }}
-              >
-                Choose file
-              </Button>
-            </Box>
+                </div>
+              </div>
+              <CustomFileUpload 
+                field="offerLetter"
+                accept=".jpg,.jpeg,.png,.pdf"
+                id="offerLetterUpload"
+              />
+            </div>
 
             {/* Pay Slip Upload */}
-            <Box sx={{ 
-              border: '1px solid #DDE2E5', 
-              borderRadius: 2, 
-              p: 3, 
-              mb: 2,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between'
-            }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <CloudUpload sx={{ fontSize: 48, color: '#5E6366' }} />
-                <Box>
-                  <Typography variant="h6" sx={{ fontWeight: 500, color: '#5E6366', mb: 1 }}>
+            <div className="upload-box">
+              <div className="upload-content">
+                <img src={Upload} alt="Upload" className="upload-icon" />
+                <div>
+                  <Typography variant="h6" className="upload-title">
                     Pay Slip
                   </Typography>
-                  <Typography variant="body2" sx={{ color: '#5E6366', fontWeight: 300 }}>
+                  <Typography variant="body2" className="upload-description">
                     Files Supported: JPEG, PDF and PNG (max size 2mb)
                   </Typography>
-                </Box>
-              </Box>
-              <Button
-                variant="contained"
-                sx={{
-                  bgcolor: '#000',
-                  color: '#fff',
-                  fontWeight: 600,
-                  px: 2.5,
-                  py: 1.25,
-                  borderRadius: 1,
-                  boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(103, 110, 118, 0.16), 0px 2px 5px 0px rgba(103, 110, 118, 0.08)',
-                  '&:hover': {
-                    bgcolor: '#333'
-                  }
-                }}
-              >
-                Choose file
-              </Button>
-            </Box>
+                </div>
+              </div>
+              <CustomFileUpload 
+                field="paySlip"
+                accept=".jpg,.jpeg,.png,.pdf"
+                id="paySlipUpload"
+              />
+            </div>
 
             {/* Resignation Upload */}
-            <Box sx={{ 
-              border: '1px solid #DDE2E5', 
-              borderRadius: 2, 
-              p: 3, 
-              mb: 2,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between'
-            }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <CloudUpload sx={{ fontSize: 48, color: '#5E6366' }} />
-                <Box>
-                  <Typography variant="h6" sx={{ fontWeight: 500, color: '#5E6366', mb: 1 }}>
+            <div className="upload-box">
+              <div className="upload-content">
+                <img src={Upload} alt="Upload" className="upload-icon" />
+                <div>
+                  <Typography variant="h6" className="upload-title">
                     Resignation
                   </Typography>
-                  <Typography variant="body2" sx={{ color: '#5E6366', fontWeight: 300 }}>
+                  <Typography variant="body2" className="upload-description">
                     Files Supported: JPEG, PDF and PNG (max size 2mb)
                   </Typography>
-                </Box>
-              </Box>
-              <Button
-                variant="contained"
-                sx={{
-                  bgcolor: '#000',
-                  color: '#fff',
-                  fontWeight: 600,
-                  px: 2.5,
-                  py: 1.25,
-                  borderRadius: 1,
-                  boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(103, 110, 118, 0.16), 0px 2px 5px 0px rgba(103, 110, 118, 0.08)',
-                  '&:hover': {
-                    bgcolor: '#333'
-                  }
-                }}
-              >
-                Choose file
-              </Button>
-            </Box>
+                </div>
+              </div>
+              <CustomFileUpload 
+                field="resignation"
+                accept=".jpg,.jpeg,.png,.pdf"
+                id="resignationUpload"
+              />
+            </div>
 
             {/* Experience Letter Upload */}
-            <Box sx={{ 
-              border: '1px solid #DDE2E5', 
-              borderRadius: 2, 
-              p: 3, 
-              mb: 2,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between'
-            }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <CloudUpload sx={{ fontSize: 48, color: '#5E6366' }} />
-                <Box>
-                  <Typography variant="h6" sx={{ fontWeight: 500, color: '#5E6366', mb: 1 }}>
+            <div className="upload-box">
+              <div className="upload-content">
+                <img src={Upload} alt="Upload" className="upload-icon" />
+                <div>
+                  <Typography variant="h6" className="upload-title">
                     Experience Letter
                   </Typography>
-                  <Typography variant="body2" sx={{ color: '#5E6366', fontWeight: 300 }}>
+                  <Typography variant="body2" className="upload-description">
                     Files Supported: JPEG, PDF and PNG (max size 2mb)
                   </Typography>
-                </Box>
-              </Box>
-              <Button
-                variant="contained"
-                sx={{
-                  bgcolor: '#000',
-                  color: '#fff',
-                  fontWeight: 600,
-                  px: 2.5,
-                  py: 1.25,
-                  borderRadius: 1,
-                  boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(103, 110, 118, 0.16), 0px 2px 5px 0px rgba(103, 110, 118, 0.08)',
-                  '&:hover': {
-                    bgcolor: '#333'
-                  }
-                }}
-              >
-                Choose file
-              </Button>
-            </Box>
+                </div>
+              </div>
+              <CustomFileUpload 
+                field="experienceLetter"
+                accept=".jpg,.jpeg,.png,.pdf"
+                id="experienceLetterUpload"
+              />
+            </div>
 
             {/* Bank Statement Upload */}
-            <Box sx={{ 
-              border: '1px solid #DDE2E5', 
-              borderRadius: 2, 
-              p: 3, 
-              mb: 2,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between'
-            }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <CloudUpload sx={{ fontSize: 48, color: '#5E6366' }} />
-                <Box>
-                  <Typography variant="h6" sx={{ fontWeight: 500, color: '#5E6366', mb: 1 }}>
+            <div className="upload-box">
+              <div className="upload-content">
+                <img src={Upload} alt="Upload" className="upload-icon" />
+                <div>
+                  <Typography variant="h6" className="upload-title">
                     Bank Statement
                   </Typography>
-                  <Typography variant="body2" sx={{ color: '#5E6366', fontWeight: 300 }}>
+                  <Typography variant="body2" className="upload-description">
                     Files Supported: JPEG, PDF and PNG (max size 2mb)
                   </Typography>
-                </Box>
-              </Box>
-              <Button
-                variant="contained"
-                sx={{
-                  bgcolor: '#000',
-                  color: '#fff',
-                  fontWeight: 600,
-                  px: 2.5,
-                  py: 1.25,
-                  borderRadius: 1,
-                  boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(103, 110, 118, 0.16), 0px 2px 5px 0px rgba(103, 110, 118, 0.08)',
-                  '&:hover': {
-                    bgcolor: '#333'
-                  }
-                }}
-              >
-                Choose file
-              </Button>
-            </Box>
+                </div>
+              </div>
+              <CustomFileUpload 
+                field="bankStatement"
+                accept=".jpg,.jpeg,.png,.pdf"
+                id="bankStatementUpload"
+              />
+            </div>
 
             {/* Employment Check Result Upload */}
-            <Box sx={{ 
-              border: '1px solid #DDE2E5', 
-              borderRadius: 2, 
-              p: 3, 
-              mb: 2,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between'
-            }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <CloudUpload sx={{ fontSize: 48, color: '#5E6366' }} />
-                <Box>
-                  <Typography variant="h6" sx={{ fontWeight: 500, color: '#5E6366', mb: 1 }}>
+            <div className="upload-box">
+              <div className="upload-content">
+                <img src={Upload} alt="Upload" className="upload-icon" />
+                <div>
+                  <Typography variant="h6" className="upload-title">
                     Employment Check Result
                   </Typography>
-                  <Typography variant="body2" sx={{ color: '#5E6366', fontWeight: 300 }}>
+                  <Typography variant="body2" className="upload-description">
                     Files Supported: JPEG, PDF and PNG (max size 2mb)
                   </Typography>
-                </Box>
-              </Box>
-              <Button
-                variant="contained"
-                sx={{
-                  bgcolor: '#000',
-                  color: '#fff',
-                  fontWeight: 600,
-                  px: 2.5,
-                  py: 1.25,
-                  borderRadius: 1,
-                  boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(103, 110, 118, 0.16), 0px 2px 5px 0px rgba(103, 110, 118, 0.08)',
-                  '&:hover': {
-                    bgcolor: '#333'
-                  }
-                }}
-              >
-                Choose file
-              </Button>
-            </Box>
+                </div>
+              </div>
+              <CustomFileUpload 
+                field="employmentCheckResult"
+                accept=".jpg,.jpeg,.png,.pdf"
+                id="employmentCheckResultUpload"
+              />
+            </div>
 
             {/* Employment Certificate Add Upload */}
-            <Box sx={{ 
-              border: '1px solid #DDE2E5', 
-              borderRadius: 2, 
-              p: 3,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between'
-            }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <CloudUpload sx={{ fontSize: 48, color: '#5E6366' }} />
-                <Box>
-                  <Typography variant="h6" sx={{ fontWeight: 500, color: '#5E6366', mb: 1 }}>
+            <div className="upload-box">
+              <div className="upload-content">
+                <img src={Upload} alt="Upload" className="upload-icon" />
+                <div>
+                  <Typography variant="h6" className="upload-title">
                     Employment Certificate Add
                   </Typography>
-                  <Typography variant="body2" sx={{ color: '#5E6366', fontWeight: 300 }}>
+                  <Typography variant="body2" className="upload-description">
                     Files Supported: JPEG, PDF and PNG (max size 2mb)
                   </Typography>
-                </Box>
-              </Box>
-              <Button
-                variant="contained"
-                sx={{
-                  bgcolor: '#000',
-                  color: '#fff',
-                  fontWeight: 600,
-                  px: 2.5,
-                  py: 1.25,
-                  borderRadius: 1,
-                  boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(103, 110, 118, 0.16), 0px 2px 5px 0px rgba(103, 110, 118, 0.08)',
-                  '&:hover': {
-                    bgcolor: '#333'
-                  }
-                }}
-              >
-                Choose file
-              </Button>
-            </Box>
+                </div>
+              </div>
+              <CustomFileUpload 
+                field="employmentCertificate"
+                accept=".jpg,.jpeg,.png,.pdf"
+                id="employmentCertificateUpload"
+              />
+            </div>
           </Box>
 
         </CardContent>

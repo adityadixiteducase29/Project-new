@@ -46,7 +46,7 @@ const UserForm = () => {
         {/* Header */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
          <img src={"Logo.svg"} alt="logo" />
-          <Typography variant="h3" sx={{ fontWeight: 600, color: '#4A4458' }}>
+          <Typography variant="h3" sx={{ fontWeight: 400, color: '#4A4458' }}>
             Background Verification Details
           </Typography>
         </Box>

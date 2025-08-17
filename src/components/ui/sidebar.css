@@ -23,7 +23,7 @@
 /* Logo section styling */
 .sidebar-logo {
   border-bottom: 1px solid #E5E7EA !important;
-  padding: 1.5rem !important;
+  /* padding: 1.5rem !important; */
 }
 
 .sidebar-logo img {
@@ -63,9 +63,10 @@
   display: flex !important;
   align-items: center !important;
   gap: 12px !important;
-  padding: 8px 12px !important;
+  padding: 25px 10px !important;
   border-radius: 8px !important;
-  width: 100% !important;
+  width: 196px !important;
+  height: 51px !important;
   text-decoration: none !important;
   border: none !important;
   outline: none !important;
@@ -77,24 +78,21 @@
   margin: 0 !important;
   transition: all 0.2s ease !important;
   cursor: pointer !important;
-  padding: 25px 10px !important;
-  height: 51px !important;
-  width: 196px !important;
 }
 
 /* Hover state */
 .sidebar-menu-button:hover:not(.active) {
-  background-color: #F3F4F6 !important
+  background-color: #F3F4F6 !important;
 }
 
 /* Active state */
 .sidebar-menu-button.active {
-    background-color: #EADDFF !important;
-    color: #3C2D63 !important;
-    font-weight: 500 !important;
-    padding: 25px 10px !important;
-    height: 51px !important;
-    width: 196px !important;
+  background-color: #EADDFF !important;
+  color: #3C2D63 !important;
+  font-weight: 500 !important;
+  padding: 25px 10px !important;
+  height: 51px !important;
+  width: 196px !important;
 }
 
 /* Icon styling */
@@ -184,16 +182,6 @@
   height: 20px !important;
 }
 
-/* Collapsed state styling */
-.sidebar-collapsed .sidebar-menu-button {
-  justify-content: center !important;
-  padding: 8px !important;
-}
-
-.sidebar-collapsed .sidebar-menu-button span {
-  display: none !important;
-}
-
 /* Pin button styling */
 .sidebar-pin-button {
   position: absolute !important;
@@ -222,4 +210,28 @@
   .sidebar-logo {
     padding: 1rem !important;
   }
+}
+
+/* Fix for collapsed state icon centering */
+[data-state="collapsed"] .sidebar-menu-button,
+.sidebar-menu-button[data-collapsed="true"] {
+  justify-content: center !important;
+}
+
+[data-state="collapsed"] .sidebar-menu-button svg,
+.sidebar-menu-button[data-collapsed="true"] svg {
+  margin: 0 auto !important;
+  display: block !important;
+}
+
+/* Ensure proper centering in collapsed state */
+[data-state="collapsed"] .sidebar-menu,
+.sidebar-menu[data-collapsed="true"] {
+  align-items: center !important;
+}
+
+[data-state="collapsed"] .sidebar-menu-item,
+.sidebar-menu-item[data-collapsed="true"] {
+  display: flex !important;
+  justify-content: center !important;
 }

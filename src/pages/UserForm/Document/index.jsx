@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Typography,
   TextField,
@@ -6,13 +6,52 @@ import {
   Paper,
   CardContent,
   CardHeader,
-  Divider,
-  Button
+  Divider
 } from '@mui/material'
-import { Row, Col } from 'reactstrap'
-import { CloudUpload } from '@mui/icons-material'
+import { Row, Col, Input, Label } from 'reactstrap'
+import './index.css'
+import Upload from '../Svg/Upload.svg'
 
 const Document = () => {
+  const [selectedFiles, setSelectedFiles] = useState({
+    aadharFront: null,
+    aadharBack: null,
+    passportPhoto: null,
+    panCard: null,
+    voterId: null,
+    drivingLicense: null,
+    passport: null,
+    electricityBill: null,
+    otherDocument: null
+  })
+
+  const handleFileChange = (field, file) => {
+    setSelectedFiles(prev => ({
+      ...prev,
+      [field]: file
+    }))
+  }
+
+  const CustomFileUpload = ({ field, accept, id }) => {
+    return (
+      <div className="file-upload-container">
+        <Input
+          id={id}
+          type="file"
+          onChange={(e) => handleFileChange(field, e.target.files[0])}
+          accept={accept}
+          className="file-upload-input"
+        />
+        <Label 
+          for={id} 
+          className="btn btn-outline-secondary mb-0 file-upload-button file-upload-label"
+        >
+          Choose file
+        </Label>
+      </div>
+    )
+  }
+
   return (
     <Paper elevation={1} sx={{ borderRadius: 3, border: '1px solid #E5E7EA' }}>
       <CardHeader
@@ -91,363 +130,184 @@ const Document = () => {
           </Typography>
           
           {/* Aadhar Card Front Side Upload */}
-          <Box sx={{ 
-            border: '1px solid #DDE2E5', 
-            borderRadius: 2, 
-            p: 3, 
-            mb: 2,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <CloudUpload sx={{ fontSize: 48, color: '#5E6366' }} />
-              <Box>
-                <Typography variant="h6" sx={{ fontWeight: 500, color: '#5E6366', mb: 1 }}>
+          <div className="upload-box">
+            <div className="upload-content">
+              <img src={Upload} alt="Upload" className="upload-icon" />
+              <div>
+                <Typography variant="h6" className="upload-title">
                   Upload Aadhar Card Front Side
                 </Typography>
-                <Typography variant="body2" sx={{ color: '#5E6366', fontWeight: 300 }}>
+                <Typography variant="body2" className="upload-description">
                   Files Supported: JPEG, PDF and PNG (max size 2mb)
                 </Typography>
-              </Box>
-            </Box>
-            <Button
-              variant="contained"
-              sx={{
-                bgcolor: '#000',
-                color: '#fff',
-                fontWeight: 600,
-                px: 2.5,
-                py: 1.25,
-                borderRadius: 1,
-                boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(103, 110, 118, 0.16), 0px 2px 5px 0px rgba(103, 110, 118, 0.08)',
-                '&:hover': {
-                  bgcolor: '#333'
-                }
-              }}
-            >
-              Choose file
-            </Button>
-          </Box>
+              </div>
+            </div>
+            <CustomFileUpload 
+              field="aadharFront"
+              accept=".jpg,.jpeg,.png,.pdf"
+              id="aadharFrontUpload"
+            />
+          </div>
 
           {/* Aadhar Card Back Side Upload */}
-          <Box sx={{ 
-            border: '1px solid #DDE2E5', 
-            borderRadius: 2, 
-            p: 3, 
-            mb: 2,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <CloudUpload sx={{ fontSize: 48, color: '#5E6366' }} />
-              <Box>
-                <Typography variant="h6" sx={{ fontWeight: 500, color: '#5E6366', mb: 1 }}>
+          <div className="upload-box">
+            <div className="upload-content">
+              <img src={Upload} alt="Upload" className="upload-icon" />
+              <div>
+                <Typography variant="h6" className="upload-title">
                   Upload Aadhar Card Back Side
                 </Typography>
-                <Typography variant="body2" sx={{ color: '#5E6366', fontWeight: 300 }}>
+                <Typography variant="body2" className="upload-description">
                   Files Supported: JPEG, PDF and PNG (max size 2mb)
                 </Typography>
-              </Box>
-            </Box>
-            <Button
-              variant="contained"
-              sx={{
-                bgcolor: '#000',
-                color: '#fff',
-                fontWeight: 600,
-                px: 2.5,
-                py: 1.25,
-                borderRadius: 1,
-                boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(103, 110, 118, 0.16), 0px 2px 5px 0px rgba(103, 110, 118, 0.08)',
-                '&:hover': {
-                  bgcolor: '#333'
-                }
-              }}
-            >
-              Choose file
-            </Button>
-          </Box>
+              </div>
+            </div>
+            <CustomFileUpload 
+              field="aadharBack"
+              accept=".jpg,.jpeg,.png,.pdf"
+              id="aadharBackUpload"
+            />
+          </div>
 
           {/* Passport Size Photo Upload */}
-          <Box sx={{ 
-            border: '1px solid #DDE2E5', 
-            borderRadius: 2, 
-            p: 3, 
-            mb: 2,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <CloudUpload sx={{ fontSize: 48, color: '#5E6366' }} />
-              <Box>
-                <Typography variant="h6" sx={{ fontWeight: 500, color: '#5E6366', mb: 1 }}>
+          <div className="upload-box">
+            <div className="upload-content">
+              <img src={Upload} alt="Upload" className="upload-icon" />
+              <div>
+                <Typography variant="h6" className="upload-title">
                   Passport Size Photo
                 </Typography>
-                <Typography variant="body2" sx={{ color: '#5E6366', fontWeight: 300 }}>
+                <Typography variant="body2" className="upload-description">
                   Files Supported: JPEG, PDF and PNG (max size 2mb)
                 </Typography>
-              </Box>
-            </Box>
-            <Button
-              variant="contained"
-              sx={{
-                bgcolor: '#000',
-                color: '#fff',
-                fontWeight: 600,
-                px: 2.5,
-                py: 1.25,
-                borderRadius: 1,
-                boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(103, 110, 118, 0.16), 0px 2px 5px 0px rgba(103, 110, 118, 0.08)',
-                '&:hover': {
-                  bgcolor: '#333'
-                }
-              }}
-            >
-              Choose file
-            </Button>
-          </Box>
+              </div>
+            </div>
+            <CustomFileUpload 
+              field="passportPhoto"
+              accept=".jpg,.jpeg,.png,.pdf"
+              id="passportPhotoUpload"
+            />
+          </div>
 
           {/* PAN Card Upload */}
-          <Box sx={{ 
-            border: '1px solid #DDE2E5', 
-            borderRadius: 2, 
-            p: 3, 
-            mb: 2,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <CloudUpload sx={{ fontSize: 48, color: '#5E6366' }} />
-              <Box>
-                <Typography variant="h6" sx={{ fontWeight: 500, color: '#5E6366', mb: 1 }}>
+          <div className="upload-box">
+            <div className="upload-content">
+              <img src={Upload} alt="Upload" className="upload-icon" />
+              <div>
+                <Typography variant="h6" className="upload-title">
                   Pan Card
                 </Typography>
-                <Typography variant="body2" sx={{ color: '#5E6366', fontWeight: 300 }}>
+                <Typography variant="body2" className="upload-description">
                   Files Supported: JPEG, PDF and PNG (max size 2mb)
                 </Typography>
-              </Box>
-            </Box>
-            <Button
-              variant="contained"
-              sx={{
-                bgcolor: '#000',
-                color: '#fff',
-                fontWeight: 600,
-                px: 2.5,
-                py: 1.25,
-                borderRadius: 1,
-                boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(103, 110, 118, 0.16), 0px 2px 5px 0px rgba(103, 110, 118, 0.08)',
-                '&:hover': {
-                  bgcolor: '#333'
-                }
-              }}
-            >
-              Choose file
-            </Button>
-          </Box>
+              </div>
+            </div>
+            <CustomFileUpload 
+              field="panCard"
+              accept=".jpg,.jpeg,.png,.pdf"
+              id="panCardUpload"
+            />
+          </div>
 
           {/* Voter ID Upload */}
-          <Box sx={{ 
-            border: '1px solid #DDE2E5', 
-            borderRadius: 2, 
-            p: 3, 
-            mb: 2,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <CloudUpload sx={{ fontSize: 48, color: '#5E6366' }} />
-              <Box>
-                <Typography variant="h6" sx={{ fontWeight: 500, color: '#5E6366', mb: 1 }}>
+          <div className="upload-box">
+            <div className="upload-content">
+              <img src={Upload} alt="Upload" className="upload-icon" />
+              <div>
+                <Typography variant="h6" className="upload-title">
                   Voter ID
                 </Typography>
-                <Typography variant="body2" sx={{ color: '#5E6366', fontWeight: 300 }}>
+                <Typography variant="body2" className="upload-description">
                   Files Supported: JPEG, PDF and PNG (max size 2mb)
                 </Typography>
-              </Box>
-            </Box>
-            <Button
-              variant="contained"
-              sx={{
-                bgcolor: '#000',
-                color: '#fff',
-                fontWeight: 600,
-                px: 2.5,
-                py: 1.25,
-                borderRadius: 1,
-                boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(103, 110, 118, 0.16), 0px 2px 5px 0px rgba(103, 110, 118, 0.08)',
-                '&:hover': {
-                  bgcolor: '#333'
-                }
-              }}
-            >
-              Choose file
-            </Button>
-          </Box>
+              </div>
+            </div>
+            <CustomFileUpload 
+              field="voterId"
+              accept=".jpg,.jpeg,.png,.pdf"
+              id="voterIdUpload"
+            />
+          </div>
 
           {/* Driving License Upload */}
-          <Box sx={{ 
-            border: '1px solid #DDE2E5', 
-            borderRadius: 2, 
-            p: 3, 
-            mb: 2,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <CloudUpload sx={{ fontSize: 48, color: '#5E6366' }} />
-              <Box>
-                <Typography variant="h6" sx={{ fontWeight: 500, color: '#5E6366', mb: 1 }}>
+          <div className="upload-box">
+            <div className="upload-content">
+              <img src={Upload} alt="Upload" className="upload-icon" />
+              <div>
+                <Typography variant="h6" className="upload-title">
                   Driving License
                 </Typography>
-                <Typography variant="body2" sx={{ color: '#5E6366', fontWeight: 300 }}>
+                <Typography variant="body2" className="upload-description">
                   Files Supported: JPEG, PDF and PNG (max size 2mb)
                 </Typography>
-              </Box>
-            </Box>
-            <Button
-              variant="contained"
-              sx={{
-                bgcolor: '#000',
-                color: '#fff',
-                fontWeight: 600,
-                px: 2.5,
-                py: 1.25,
-                borderRadius: 1,
-                boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(103, 110, 118, 0.16), 0px 2px 5px 0px rgba(103, 110, 118, 0.08)',
-                '&:hover': {
-                  bgcolor: '#333'
-                }
-              }}
-            >
-              Choose file
-            </Button>
-          </Box>
+              </div>
+            </div>
+            <CustomFileUpload 
+              field="drivingLicense"
+              accept=".jpg,.jpeg,.png,.pdf"
+              id="drivingLicenseUpload"
+            />
+          </div>
 
           {/* Passport Upload */}
-          <Box sx={{ 
-            border: '1px solid #DDE2E5', 
-            borderRadius: 2, 
-            p: 3, 
-            mb: 2,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <CloudUpload sx={{ fontSize: 48, color: '#5E6366' }} />
-              <Box>
-                <Typography variant="h6" sx={{ fontWeight: 500, color: '#5E6366', mb: 1 }}>
+          <div className="upload-box">
+            <div className="upload-content">
+              <img src={Upload} alt="Upload" className="upload-icon" />
+              <div>
+                <Typography variant="h6" className="upload-title">
                   Passport
                 </Typography>
-                <Typography variant="body2" sx={{ color: '#5E6366', fontWeight: 300 }}>
+                <Typography variant="body2" className="upload-description">
                   Files Supported: JPEG, PDF and PNG (max size 2mb)
                 </Typography>
-              </Box>
-            </Box>
-            <Button
-              variant="contained"
-              sx={{
-                bgcolor: '#000',
-                color: '#fff',
-                fontWeight: 600,
-                px: 2.5,
-                py: 1.25,
-                borderRadius: 1,
-                boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(103, 110, 118, 0.16), 0px 2px 5px 0px rgba(103, 110, 118, 0.08)',
-                '&:hover': {
-                  bgcolor: '#333'
-                }
-              }}
-            >
-              Choose file
-            </Button>
-          </Box>
+              </div>
+            </div>
+            <CustomFileUpload 
+              field="passport"
+              accept=".jpg,.jpeg,.png,.pdf"
+              id="passportUpload"
+            />
+          </div>
 
           {/* Electricity Bill Upload */}
-          <Box sx={{ 
-            border: '1px solid #DDE2E5', 
-            borderRadius: 2, 
-            p: 3, 
-            mb: 2,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <CloudUpload sx={{ fontSize: 48, color: '#5E6366' }} />
-              <Box>
-                <Typography variant="h6" sx={{ fontWeight: 500, color: '#5E6366', mb: 1 }}>
-                  Ele
+          <div className="upload-box">
+            <div className="upload-content">
+              <img src={Upload} alt="Upload" className="upload-icon" />
+              <div>
+                <Typography variant="h6" className="upload-title">
+                  Electricity Bill
                 </Typography>
-                <Typography variant="body2" sx={{ color: '#5E6366', fontWeight: 300 }}>
+                <Typography variant="body2" className="upload-description">
                   Files Supported: JPEG, PDF and PNG (max size 2mb)
                 </Typography>
-              </Box>
-            </Box>
-            <Button
-              variant="contained"
-              sx={{
-                bgcolor: '#000',
-                color: '#fff',
-                fontWeight: 600,
-                px: 2.5,
-                py: 1.25,
-                borderRadius: 1,
-                boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(103, 110, 118, 0.16), 0px 2px 5px 0px rgba(103, 110, 118, 0.08)',
-                '&:hover': {
-                  bgcolor: '#333'
-                }
-              }}
-            >
-              Choose file
-            </Button>
-          </Box>
+              </div>
+            </div>
+            <CustomFileUpload 
+              field="electricityBill"
+              accept=".jpg,.jpeg,.png,.pdf"
+              id="electricityBillUpload"
+            />
+          </div>
 
           {/* Other Document Upload */}
-          <Box sx={{ 
-            border: '1px solid #DDE2E5', 
-            borderRadius: 2, 
-            p: 3,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <CloudUpload sx={{ fontSize: 48, color: '#5E6366' }} />
-              <Box>
-                <Typography variant="h6" sx={{ fontWeight: 500, color: '#5E6366', mb: 1 }}>
+          <div className="upload-box">
+            <div className="upload-content">
+              <img src={Upload} alt="Upload" className="upload-icon" />
+              <div>
+                <Typography variant="h6" className="upload-title">
                   Other document
                 </Typography>
-                <Typography variant="body2" sx={{ color: '#5E6366', fontWeight: 300 }}>
+                <Typography variant="body2" className="upload-description">
                   Files Supported: JPEG, PDF and PNG (max size 2mb)
                 </Typography>
-              </Box>
-            </Box>
-            <Button
-              variant="contained"
-              sx={{
-                bgcolor: '#000',
-                color: '#fff',
-                fontWeight: 600,
-                px: 2.5,
-                py: 1.25,
-                borderRadius: 1,
-                boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(103, 110, 118, 0.16), 0px 2px 5px 0px rgba(103, 110, 118, 0.08)',
-                '&:hover': {
-                  bgcolor: '#333'
-                }
-              }}
-            >
-              Choose file
-            </Button>
-          </Box>
+              </div>
+            </div>
+            <CustomFileUpload 
+              field="otherDocument"
+              accept=".jpg,.jpeg,.png,.pdf"
+              id="otherDocumentUpload"
+            />
+          </div>
         </Box>
 
       </CardContent>
