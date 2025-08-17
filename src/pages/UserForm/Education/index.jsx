@@ -21,119 +21,119 @@ const Education = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Paper elevation={1} sx={{ borderRadius: 3, border: '1px solid #E5E7EA' }}>
-        <CardHeader
-          title={
-            <Typography variant="h5" sx={{ fontWeight: 500, color: '#4A4458' }}>
-              Education
-            </Typography>
-          }
-          sx={{ pb: 1 }}
-        />
-        <Divider sx={{ mb: 2 }} />
-        <CardContent sx={{ pt: 0 }}>
+    <Paper elevation={1} sx={{ borderRadius: 3, border: '1px solid #E5E7EA' }}>
+      <CardHeader
+        title={
+          <Typography variant="h5" sx={{ fontWeight: 500, color: '#4A4458' }}>
+            Education
+          </Typography>
+        }
+        sx={{ pb: 1 }}
+      />
+      <Divider sx={{ mb: 2 }} />
+      <CardContent sx={{ pt: 0 }}>
           {/* Educational Details Section */}
-          <Box sx={{ mb: 4 }}>
-            <Typography variant="h6" sx={{ fontWeight: 500, color: '#3C2D63', mb: 3 }}>
-              Educational Details
-            </Typography>
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="h6" sx={{ fontWeight: 500, color: '#3C2D63', mb: 3 }}>
+            Educational Details
+          </Typography>
             <Row className="g-3">
               {/* Row 1 */}
               <Col className="col-12 col-md-6">
-                <TextField
-                  fullWidth
+              <TextField
+                fullWidth
                   label="Highest Education Qualifications"
-                  placeholder="Enter"
-                  variant="outlined"
+                placeholder="Enter"
+                variant="outlined"
                   InputLabelProps={{ shrink: true }}
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      height: 56,
-                      '& fieldset': {
-                        borderColor: '#79747E'
-                      },
-                      '&:hover fieldset': {
-                        borderColor: '#6750A4'
-                      },
-                      '&.Mui-focused fieldset': {
-                        borderColor: '#6750A4'
-                      }
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    height: 56,
+                    '& fieldset': {
+                      borderColor: '#79747E'
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#6750A4'
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#6750A4'
                     }
-                  }}
-                />
+                  }
+                }}
+              />
               </Col>
               <Col className="col-12 col-md-6">
-                <TextField
-                  fullWidth
+              <TextField
+                fullWidth
                   label="Institute Name"
-                  placeholder="Enter"
-                  variant="outlined"
+                placeholder="Enter"
+                variant="outlined"
                   InputLabelProps={{ shrink: true }}
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      height: 56,
-                      '& fieldset': {
-                        borderColor: '#79747E'
-                      },
-                      '&:hover fieldset': {
-                        borderColor: '#6750A4'
-                      },
-                      '&.Mui-focused fieldset': {
-                        borderColor: '#6750A4'
-                      }
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    height: 56,
+                    '& fieldset': {
+                      borderColor: '#79747E'
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#6750A4'
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#6750A4'
                     }
-                  }}
-                />
+                  }
+                }}
+              />
               </Col>
               {/* Row 2 */}
               <Col className="col-12 col-md-6">
-                <TextField
-                  fullWidth
+              <TextField
+                fullWidth
                   label="Grades"
-                  placeholder="Enter"
-                  variant="outlined"
+                placeholder="Enter"
+                variant="outlined"
                   InputLabelProps={{ shrink: true }}
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      height: 56,
-                      '& fieldset': {
-                        borderColor: '#79747E'
-                      },
-                      '&:hover fieldset': {
-                        borderColor: '#6750A4'
-                      },
-                      '&.Mui-focused fieldset': {
-                        borderColor: '#6750A4'
-                      }
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    height: 56,
+                    '& fieldset': {
+                      borderColor: '#79747E'
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#6750A4'
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#6750A4'
                     }
-                  }}
-                />
+                  }
+                }}
+              />
               </Col>
               <Col className="col-12 col-md-6">
-                <TextField
-                  fullWidth
+              <TextField
+                fullWidth
                   label="City"
-                  placeholder="Enter"
-                  variant="outlined"
+                placeholder="Enter"
+                variant="outlined"
                   InputLabelProps={{ shrink: true }}
                   InputProps={{
                     endAdornment: <ArrowDropDown />
                   }}
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      height: 56,
-                      '& fieldset': {
-                        borderColor: '#79747E'
-                      },
-                      '&:hover fieldset': {
-                        borderColor: '#6750A4'
-                      },
-                      '&.Mui-focused fieldset': {
-                        borderColor: '#6750A4'
-                      }
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    height: 56,
+                    '& fieldset': {
+                      borderColor: '#79747E'
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#6750A4'
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#6750A4'
                     }
-                  }}
-                />
+                  }
+                }}
+              />
               </Col>
               {/* Row 3 - Date Range */}
               <Col className="col-12 col-md-6">
@@ -356,9 +356,9 @@ const Education = () => {
                 Choose file
               </Button>
             </Box>
-          </Box>
-        </CardContent>
-      </Paper>
+        </Box>
+      </CardContent>
+    </Paper>
     </LocalizationProvider>
   )
 }

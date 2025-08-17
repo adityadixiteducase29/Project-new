@@ -153,14 +153,14 @@ const Dashboard = () => {
           Dashboard
         </h1>
       </div>
-      <div className="card-container">
+      <div className="card-container-dashboard">
         {cards.map((card, index) => (
-          <div className="card h-[102px] w-[237px]" key={index}>
+          <div className="card-dashboard h-[102px] w-[237px]" key={index}>
             <div className="flex gap-2">
-              <div className="card-icon">{card.icon}</div>
-              <div className="card-label">{card.label}</div>
+              <div className="card-icon-dashboard">{card.icon}</div>
+              <div className="card-label-dashboard">{card.label}</div>
             </div>
-            <div className="card-value">{card.value}</div>
+            <div className="card-value-dashboard">{card.value}</div>
           </div>
         ))}
       </div>

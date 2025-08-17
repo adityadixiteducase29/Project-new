@@ -1,11 +1,11 @@
 /* DashboardCards.css */
-.card-container {
+.card-container-dashboard {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
   }
   
-  .card {
+  .card-dashboard {
   background: white;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
@@ -29,19 +29,19 @@
     color: #4F378B;
     margin-bottom: 0.5rem;
   }
-  .card-icon {
+  .card-icon-dashboard {
     font-size: 1.2rem;
     color: #9ca3af; /* gray-400 */
     margin-bottom: 0.25rem;
   }
   
-  .card-label {
+  .card-label-dashboard {
     font-size: 0.85rem;
     color: #9ca3af;
     margin-bottom: 0.5rem;
   }
   
-  .card-value {
+  .card-value-dashboard {
     font-size: 1.5rem;
     color: #4F378B; /* purple-800 */
   }

@@ -41,7 +41,7 @@ function PinSidebar() {
       variant="ghost"
       size="icon"
       onClick={togglePin}
-      className="hover:bg-accent transition-colors"
+      className="sidebar-pin-button"
       title={isExpanded ? "Unpin sidebar" : "Pin sidebar"}
     >
       {isExpanded ? <PinOff size={16} /> : <Pin size={16} />}
@@ -77,14 +77,12 @@ export function AppSidebar() {
     return () => window.removeEventListener('resize', handleResize);
   }, [state, setOpen, isMobile]);
 
-  // No longer need custom isActive function as we're using NavLink's built-in isActive
-
   return (
     <Sidebar
-      className="border-r border-border bg-sidebar shadow-2xl"
+      className="sidebar border-r border-border bg-sidebar shadow-2xl"
       collapsible="icon"
     >
-      <SidebarContent className="bg-gradient-to-b from-sidebar to-sidebar/95">
+      <SidebarContent className="sidebar-content bg-gradient-to-b from-sidebar to-sidebar/95">
         {/* Pin Sidebar Button - positioned in corner when expanded, normal flow when collapsed */}
         {isCollapsed ? (
           <div className="border-b border-sidebar-border flex justify-center items-center">
@@ -99,7 +97,7 @@ export function AppSidebar() {
         )}
 
         {/* Logo section */}
-        <div className={`border-b border-sidebar-border ${isCollapsed ? '' : 'p-6'}`}>
+        <div className={`sidebar-logo border-b border-sidebar-border ${isCollapsed ? '' : 'p-6'}`}>
           <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
             <span className="font-bold text-lg text-sidebar-foreground">
               <img 
@@ -111,41 +109,41 @@ export function AppSidebar() {
           </div>
         </div>
 
-        <SidebarGroup className={`${isCollapsed ? 'px-1 py-2' : 'px-3 py-4'}`}>
+        <SidebarGroup className={`sidebar-navigation ${isCollapsed ? 'px-1 py-2' : 'px-3 py-4'}`}>
           {!isCollapsed && (
-            <SidebarGroupLabel className="text-xs font-semibold text-sidebar-foreground/70 uppercase tracking-wider mb-2">
+            <SidebarGroupLabel className="sidebar-navigation-label text-xs font-semibold text-sidebar-foreground/70 uppercase tracking-wider mb-2">
               Navigation
             </SidebarGroupLabel>
           )}
 
           <SidebarGroupContent>
-            <SidebarMenu className={`space-y-1 ${isCollapsed ? 'flex flex-col items-center' : ''}`}>
+            <SidebarMenu className={`sidebar-menu space-y-1 ${isCollapsed ? 'flex flex-col items-center' : ''}`}>
               {items.map((item) => {
                 const IconComponent = item.icon;
                 const isDashboard = item.url === "/dashboard";
                 return (
-                  <SidebarMenuItem key={item.title}>
+                  <SidebarMenuItem key={item.title} className="sidebar-menu-item">
                     <SidebarMenuButton 
                       asChild 
-                      className={`relative group transition-all duration-200 rounded-lg hover:bg-sidebar-accent/50 text-sidebar-foreground/80 hover:text-sidebar-foreground ${isCollapsed ? 'justify-center !text-center' : ''}`}
+                      className="relative group transition-all duration-200 rounded-lg hover:bg-sidebar-accent/50 text-sidebar-foreground/80 hover:text-sidebar-foreground"
                     >
                       <NavLink 
                         to={item.url} 
                         {...(isDashboard ? { end: true } : {})}
                         className={({ isActive }) => `
-                          flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'} ${isCollapsed ? 'px-2' : 'px-3'} py-2 rounded-lg ${isCollapsed ? 'w-auto' : 'w-full'}
-                          ${isActive 
-                            ? "bg-[#EADDFF] text-primary" 
-                            : ""}
+                          sidebar-menu-button flex items-center gap-3 px-3 py-2 rounded-lg w-full transition-all duration-200
+                          ${isActive ? "active" : ""}
                         `}
                       >
-                        <IconComponent size ={20} className=" transition-colors" />
+                        <IconComponent 
+                          size={20} 
+                          className="transition-colors"
+                        />
                         {!isCollapsed && (
                           <span className="font-medium transition-colors">
                             {item.title}
                           </span>
                         )}
-                        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-gradient-to-b from-primary to-primary-glow rounded-l-full hidden navlink-indicator"></div>
                       </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
