@@ -3,12 +3,12 @@ import {
   Typography,
   TextField,
   Box,
-  Grid,
   Paper,
   CardContent,
   CardHeader,
   Divider
 } from '@mui/material'
+import { Row, Col } from 'reactstrap'
 
 const Tenancy = () => {
   return (
@@ -16,24 +16,28 @@ const Tenancy = () => {
       <CardHeader
         title={
           <Typography variant="h5" sx={{ fontWeight: 500, color: '#4A4458' }}>
-            Tenancy
+            Tenancy Information
           </Typography>
         }
         sx={{ pb: 1 }}
       />
       <Divider sx={{ mb: 2 }} />
       <CardContent sx={{ pt: 0 }}>
+        
+        {/* House Owner Details Section */}
         <Box sx={{ mb: 4 }}>
           <Typography variant="h6" sx={{ fontWeight: 500, color: '#3C2D63', mb: 3 }}>
-            Tenancy Details
+            House Owner details
           </Typography>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+          <Row className="g-3">
+            {/* Row 1: House Owner Name (50%) + Contact Number (50%) */}
+            <Col className="col-12 col-md-6">
               <TextField
                 fullWidth
-                label="Landlord Name"
+                label="House Owner Name"
                 placeholder="Enter"
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -49,13 +53,14 @@ const Tenancy = () => {
                   }
                 }}
               />
-            </Grid>
-            <Grid item xs={12} md={6}>
+            </Col>
+            <Col className="col-12 col-md-6">
               <TextField
                 fullWidth
-                label="Landlord Contact"
+                label="Contact Number"
                 placeholder="Enter"
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -71,13 +76,15 @@ const Tenancy = () => {
                   }
                 }}
               />
-            </Grid>
-            <Grid item xs={12} md={6}>
+            </Col>
+            {/* Row 2: Address (100%) */}
+            <Col className="col-12">
               <TextField
                 fullWidth
-                label="Rent Amount"
+                label="Address"
                 placeholder="Enter"
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -93,13 +100,15 @@ const Tenancy = () => {
                   }
                 }}
               />
-            </Grid>
-            <Grid item xs={12} md={6}>
+            </Col>
+            {/* Row 3: Residing (50%) */}
+            <Col className="col-12 col-md-6">
               <TextField
                 fullWidth
-                label="Duration of Stay"
+                label="Residing"
                 placeholder="Enter"
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -115,9 +124,10 @@ const Tenancy = () => {
                   }
                 }}
               />
-            </Grid>
-          </Grid>
+            </Col>
+          </Row>
         </Box>
+
       </CardContent>
     </Paper>
   )

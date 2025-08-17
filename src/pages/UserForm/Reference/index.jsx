@@ -3,12 +3,12 @@ import {
   Typography,
   TextField,
   Box,
-  Grid,
   Paper,
   CardContent,
   CardHeader,
   Divider
 } from '@mui/material'
+import { Row, Col } from 'reactstrap'
 
 const Reference = () => {
   return (
@@ -23,17 +23,21 @@ const Reference = () => {
       />
       <Divider sx={{ mb: 2 }} />
       <CardContent sx={{ pt: 0 }}>
+        
+        {/* Reference Information - 1 */}
         <Box sx={{ mb: 4 }}>
           <Typography variant="h6" sx={{ fontWeight: 500, color: '#3C2D63', mb: 3 }}>
-            Reference Details
+            Reference Information - 1
           </Typography>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+          <Row className="g-3">
+            {/* Row 1: Full Name (50%) + Address (50%) */}
+            <Col className="col-12 col-md-6">
               <TextField
                 fullWidth
-                label="Reference Name"
+                label="Full Name"
                 placeholder="Enter"
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -49,13 +53,14 @@ const Reference = () => {
                   }
                 }}
               />
-            </Grid>
-            <Grid item xs={12} md={6}>
+            </Col>
+            <Col className="col-12 col-md-6">
               <TextField
                 fullWidth
-                label="Reference Contact"
+                label="Address"
                 placeholder="Enter"
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -71,13 +76,15 @@ const Reference = () => {
                   }
                 }}
               />
-            </Grid>
-            <Grid item xs={12} md={6}>
+            </Col>
+            {/* Row 2: Relation (33%) + Contact Number (33%) + Police Station (33%) */}
+            <Col className="col-12 col-md-4">
               <TextField
                 fullWidth
-                label="Relationship"
+                label="Relation"
                 placeholder="Enter"
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -93,13 +100,14 @@ const Reference = () => {
                   }
                 }}
               />
-            </Grid>
-            <Grid item xs={12} md={6}>
+            </Col>
+            <Col className="col-12 col-md-4">
               <TextField
                 fullWidth
-                label="Company/Organization"
+                label="Contact Number"
                 placeholder="Enter"
                 variant="outlined"
+                InputLabelProps={{ shrink: true }}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -115,9 +123,321 @@ const Reference = () => {
                   }
                 }}
               />
-            </Grid>
-          </Grid>
+            </Col>
+            <Col className="col-12 col-md-4">
+              <TextField
+                fullWidth
+                label="Police Station"
+                placeholder="Enter"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    height: 56,
+                    '& fieldset': {
+                      borderColor: '#79747E'
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#6750A4'
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#6750A4'
+                    }
+                  }
+                }}
+              />
+            </Col>
+          </Row>
         </Box>
+
+        <Divider sx={{ my: 3 }} />
+
+        {/* Reference Information - 2 */}
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="h6" sx={{ fontWeight: 500, color: '#3C2D63', mb: 3 }}>
+            Reference Information - 2
+          </Typography>
+          <Row className="g-3">
+            {/* Row 1: Full Name (50%) + Address (50%) */}
+            <Col className="col-12 col-md-6">
+              <TextField
+                fullWidth
+                label="Full Name"
+                placeholder="Enter"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    height: 56,
+                    '& fieldset': {
+                      borderColor: '#79747E'
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#6750A4'
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#6750A4'
+                    }
+                  }
+                }}
+              />
+            </Col>
+            <Col className="col-12 col-md-6">
+              <TextField
+                fullWidth
+                label="Address"
+                placeholder="Enter"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    height: 56,
+                    '& fieldset': {
+                      borderColor: '#79747E'
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#6750A4'
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#6750A4'
+                    }
+                  }
+                }}
+              />
+            </Col>
+            {/* Row 2: Relation (33%) + Contact Number (33%) + Police Station (33%) */}
+            <Col className="col-12 col-md-4">
+              <TextField
+                fullWidth
+                label="Relation"
+                placeholder="Enter"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    height: 56,
+                    '& fieldset': {
+                      borderColor: '#79747E'
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#6750A4'
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#6750A4'
+                    }
+                  }
+                }}
+              />
+            </Col>
+            <Col className="col-12 col-md-4">
+              <TextField
+                fullWidth
+                label="Contact Number"
+                placeholder="Enter"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    height: 56,
+                    '& fieldset': {
+                      borderColor: '#79747E'
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#6750A4'
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#6750A4'
+                    }
+                  }
+                }}
+              />
+            </Col>
+            <Col className="col-12 col-md-4">
+              <TextField
+                fullWidth
+                label="Police Station"
+                placeholder="Enter"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    height: 56,
+                    '& fieldset': {
+                      borderColor: '#79747E'
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#6750A4'
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#6750A4'
+                    }
+                  }
+                }}
+              />
+            </Col>
+          </Row>
+        </Box>
+
+        <Divider sx={{ my: 3 }} />
+
+        {/* Reference Information - 3 */}
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="h6" sx={{ fontWeight: 500, color: '#3C2D63', mb: 3 }}>
+            Reference Information - 3
+          </Typography>
+          <Row className="g-3">
+            {/* Row 1: Full Name (50%) + Address (50%) */}
+            <Col className="col-12 col-md-6">
+              <TextField
+                fullWidth
+                label="Full Name"
+                placeholder="Enter"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    height: 56,
+                    '& fieldset': {
+                      borderColor: '#79747E'
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#6750A4'
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#6750A4'
+                    }
+                  }
+                }}
+              />
+            </Col>
+            <Col className="col-12 col-md-6">
+              <TextField
+                fullWidth
+                label="Address"
+                placeholder="Enter"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    height: 56,
+                    '& fieldset': {
+                      borderColor: '#79747E'
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#6750A4'
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#6750A4'
+                    }
+                  }
+                }}
+              />
+            </Col>
+            {/* Row 2: Relation (33%) + Contact Number (33%) + Police Station (33%) */}
+            <Col className="col-12 col-md-4">
+              <TextField
+                fullWidth
+                label="Relation"
+                placeholder="Enter"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    height: 56,
+                    '& fieldset': {
+                      borderColor: '#79747E'
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#6750A4'
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#6750A4'
+                    }
+                  }
+                }}
+              />
+            </Col>
+            <Col className="col-12 col-md-4">
+              <TextField
+                fullWidth
+                label="Contact Number"
+                placeholder="Enter"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    height: 56,
+                    '& fieldset': {
+                      borderColor: '#79747E'
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#6750A4'
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#6750A4'
+                    }
+                  }
+                }}
+              />
+            </Col>
+            <Col className="col-12 col-md-4">
+              <TextField
+                fullWidth
+                label="Police Station"
+                placeholder="Enter"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    height: 56,
+                    '& fieldset': {
+                      borderColor: '#79747E'
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#6750A4'
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#6750A4'
+                    }
+                  }
+                }}
+              />
+            </Col>
+          </Row>
+        </Box>
+
+        <Divider sx={{ my: 3 }} />
+
+        {/* Current Address Section */}
+        <Box sx={{ mb: 4 }}>
+          <Row className="g-3">
+            <Col className="col-12">
+              <TextField
+                fullWidth
+                label="Current Address"
+                placeholder="Enter"
+                variant="outlined"
+                InputLabelProps={{ shrink: true }}
+                multiline
+                minRows={2}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: '#79747E'
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#6750A4'
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#6750A4'
+                    }
+                  }
+                }}
+              />
+            </Col>
+          </Row>
+        </Box>
+
       </CardContent>
     </Paper>
   )
