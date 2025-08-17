@@ -16,6 +16,7 @@ import {
   CardContent,
   CardHeader
 } from '@mui/material'
+import { Row, Col } from "reactstrap"
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
@@ -50,12 +51,12 @@ const PersonalInformation = () => {
               Basic Details
             </Typography>
             <Grid container spacing={3}>
-              {/* Full Name */}
+              {/* First Name */}
               <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="Full Name"
-                  placeholder="Enter your full name"
+                  label="First Name"
+                  placeholder="Enter your first name"
                   variant="outlined"
                   slotProps={{
                     inputLabel: {
@@ -65,13 +66,12 @@ const PersonalInformation = () => {
                   className="form-field"
                 />
               </Grid>
-              {/* Email ID */}
+              {/* Last Name */}
               <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="Email ID"
-                  type="email"
-                  placeholder="Enter your email address"
+                  label="Last Name"
+                  placeholder="Enter your last name"
                   variant="outlined"
                   slotProps={{
                     inputLabel: {
@@ -81,10 +81,10 @@ const PersonalInformation = () => {
                   className="form-field"
                 />
               </Grid>
-                              {/* Gender */}
-                <Grid item xs={12} md={6}>
-                  <FormControl fullWidth>
-                                      <InputLabel className="gender-label">
+              {/* Gender */}
+              <Grid item xs={12} md={4}>
+                <FormControl fullWidth>
+                  <InputLabel className="gender-label" shrink>
                     Gender
                   </InputLabel>
                   <Select
@@ -92,14 +92,14 @@ const PersonalInformation = () => {
                     onChange={(e) => setGender(e.target.value)}
                     className="select-field"
                   >
-                      {genderDropdown.map((option) => (
-                        <MenuItem key={option.id} value={option.id}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
+                    {genderDropdown.map((option) => (
+                      <MenuItem key={option.id} value={option.id}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
               {/* Contact Number */}
               <Grid item xs={12} md={4}>
                 <TextField
@@ -144,18 +144,12 @@ const PersonalInformation = () => {
                       fullWidth: true,
                       placeholder: "Enter Date of Birth",
                       variant: "outlined",
-                      slotProps: {
-                        inputLabel: {
-                          shrink: true,
-                        }
-                      },
+                      InputLabelProps: { shrink: true },
                       className: "form-field"
                     }
                   }}
+                  format="dd/MM/yyyy"
                 />
-                <Typography variant="caption" className="date-caption">
-                  MM/DD/YYYY
-                </Typography>
               </Grid>
             </Grid>
           </Box>
@@ -399,138 +393,138 @@ const PersonalInformation = () => {
               <Grid container spacing={3}>
                 {/* House No./Building/Apartment */}
                 <Grid item xs={12} md={6}>
-                                  <TextField
-                  fullWidth
-                  label="House No./Building/Apartment"
-                  placeholder="Enter house number or building name"
-                  variant="outlined"
-                  slotProps={{
-                    inputLabel: {
-                      shrink: true,
-                    }
-                  }}
-                  className="form-field"
-                />
+                  <TextField
+                    fullWidth
+                    label="House No./Building/Apartment"
+                    placeholder="Enter house number or building name"
+                    variant="outlined"
+                    slotProps={{
+                      inputLabel: {
+                        shrink: true,
+                      }
+                    }}
+                    className="form-field"
+                  />
                 </Grid>
                 {/* Area/Locality/Sector */}
                 <Grid item xs={12} md={6}>
-                                  <TextField
-                  fullWidth
-                  label="Area/Locality/Sector"
-                  placeholder="Enter area, locality or sector"
-                  variant="outlined"
-                  slotProps={{
-                    inputLabel: {
-                      shrink: true,
-                    }
-                  }}
-                  className="form-field"
-                />
+                  <TextField
+                    fullWidth
+                    label="Area/Locality/Sector"
+                    placeholder="Enter area, locality or sector"
+                    variant="outlined"
+                    slotProps={{
+                      inputLabel: {
+                        shrink: true,
+                      }
+                    }}
+                    className="form-field"
+                  />
                 </Grid>
                 {/* Area/Locality/Sector 2 */}
                 <Grid item xs={12} md={6}>
-                                  <TextField
-                  fullWidth
-                  label="Area/Locality/Sector 2"
-                  placeholder="Enter additional area details"
-                  variant="outlined"
-                  slotProps={{
-                    inputLabel: {
-                      shrink: true,
-                    }
-                  }}
-                  className="form-field"
-                />
+                  <TextField
+                    fullWidth
+                    label="Area/Locality/Sector 2"
+                    placeholder="Enter additional area details"
+                    variant="outlined"
+                    slotProps={{
+                      inputLabel: {
+                        shrink: true,
+                      }
+                    }}
+                    className="form-field"
+                  />
                 </Grid>
                 {/* District */}
                 <Grid item xs={12} md={6}>
-                                  <TextField
-                  fullWidth
-                  label="District"
-                  placeholder="Enter district name"
-                  variant="outlined"
-                  slotProps={{
-                    inputLabel: {
-                      shrink: true,
-                    }
-                  }}
-                  className="form-field"
-                />
+                  <TextField
+                    fullWidth
+                    label="District"
+                    placeholder="Enter district name"
+                    variant="outlined"
+                    slotProps={{
+                      inputLabel: {
+                        shrink: true,
+                      }
+                    }}
+                    className="form-field"
+                  />
                 </Grid>
                 {/* Police Station */}
                 <Grid item xs={12} md={4}>
-                                  <TextField
-                  fullWidth
-                  label="Police Station"
-                  placeholder="Enter police station name"
-                  variant="outlined"
-                  slotProps={{
-                    inputLabel: {
-                      shrink: true,
-                    }
-                  }}
-                  className="form-field"
-                />
+                  <TextField
+                    fullWidth
+                    label="Police Station"
+                    placeholder="Enter police station name"
+                    variant="outlined"
+                    slotProps={{
+                      inputLabel: {
+                        shrink: true,
+                      }
+                    }}
+                    className="form-field"
+                  />
                 </Grid>
                 {/* Pincode */}
                 <Grid item xs={12} md={4}>
-                                  <TextField
-                  fullWidth
-                  label="Pincode"
-                  placeholder="Enter 6-digit pincode"
-                  variant="outlined"
-                  slotProps={{
-                    inputLabel: {
-                      shrink: true,
-                    }
-                  }}
-                  className="form-field"
-                />
+                  <TextField
+                    fullWidth
+                    label="Pincode"
+                    placeholder="Enter 6-digit pincode"
+                    variant="outlined"
+                    slotProps={{
+                      inputLabel: {
+                        shrink: true,
+                      }
+                    }}
+                    className="form-field"
+                  />
                 </Grid>
                 {/* Tehsil */}
                 <Grid item xs={12} md={4}>
-                                  <TextField
-                  fullWidth
-                  label="Tehsil"
-                  placeholder="Enter tehsil name"
-                  variant="outlined"
-                  slotProps={{
-                    inputLabel: {
-                      shrink: true,
-                    }
-                  }}
-                  className="form-field"
-                />
+                  <TextField
+                    fullWidth
+                    label="Tehsil"
+                    placeholder="Enter tehsil name"
+                    variant="outlined"
+                    slotProps={{
+                      inputLabel: {
+                        shrink: true,
+                      }
+                    }}
+                    className="form-field"
+                  />
                 </Grid>
                 {/* Post Office */}
                 <Grid item xs={12} md={4}>
-                                  <TextField
-                  fullWidth
-                  label="Post Office"
-                  placeholder="Enter post office name"
-                  variant="outlined"
-                  slotProps={{
-                    inputLabel: {
-                      shrink: true,
-                    }
-                  }}
-                  className="form-field"
-                />
+                  <TextField
+                    fullWidth
+                    label="Post Office"
+                    placeholder="Enter post office name"
+                    variant="outlined"
+                    slotProps={{
+                      inputLabel: {
+                        shrink: true,
+                      }
+                    }}
+                    className="form-field"
+                  />
                 </Grid>
                 {/* Landmark */}
                 <Grid item xs={12} md={4}>
-                                  <TextField
-                  fullWidth
-                  label="Landmark"
-                  placeholder="Enter nearby landmark"
-                  variant="outlined"
-                  slotProps={{
-                    inputLabel: {
-                      shrink: true,
-                    }
-                  }}
-                  className="form-field"
-                />
+                  <TextField
+                    fullWidth
+                    label="Landmark"
+                    placeholder="Enter nearby landmark"
+                    variant="outlined"
+                    slotProps={{
+                      inputLabel: {
+                        shrink: true,
+                      }
+                    }}
+                    className="form-field"
+                  />
                 </Grid>
               </Grid>
             )}

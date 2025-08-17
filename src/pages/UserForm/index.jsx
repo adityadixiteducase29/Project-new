@@ -45,22 +45,7 @@ const UserForm = () => {
       <Container maxWidth="xl">
         {/* Header */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
-          <Box
-            sx={{
-              width: 64,
-              height: 64,
-              background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
-              borderRadius: 2,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'white',
-              fontWeight: 'bold',
-              fontSize: '1.25rem'
-            }}
-          >
-            RPI
-          </Box>
+         <img src={"Logo.svg"} alt="logo" />
           <Typography variant="h3" sx={{ fontWeight: 600, color: '#4A4458' }}>
             Background Verification Details
           </Typography>
