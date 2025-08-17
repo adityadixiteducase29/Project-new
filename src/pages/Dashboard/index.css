@@ -1,11 +1,11 @@
 /* DashboardCards.css */
-.card-container-dashboard {
+.card-container-dashboard-admin {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
   }
   
-  .card-dashboard {
+  .card-dashboard-admin {
   background: white;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
@@ -18,30 +18,30 @@
   min-width: 237px;
   flex-shrink: 0;
 }
-  .dashboard-title {
+  .dashboard-title-admin {
     font-size: 36px;
     font-weight: bold;
     color: #4F378B;
     margin-bottom: 0.5rem;
   }
-  .basic-title {
+  .basic-title-admin {
     font-size: 36px;
     color: #4F378B;
     margin-bottom: 0.5rem;
   }
-  .card-icon-dashboard {
+  .card-icon-dashboard-admin {
     font-size: 1.2rem;
     color: #9ca3af; /* gray-400 */
     margin-bottom: 0.25rem;
   }
   
-  .card-label-dashboard {
+  .card-label-dashboard-admin {
     font-size: 0.85rem;
     color: #9ca3af;
     margin-bottom: 0.5rem;
   }
   
-  .card-value-dashboard {
+  .card-value-dashboard-admin {
     font-size: 1.5rem;
     color: #4F378B; /* purple-800 */
   }

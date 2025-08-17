@@ -1,0 +1,201 @@
+/* App Sidebar Styles - Restored Original Design */
+.app-sidebar {
+  width: 348px;
+  background: #F8F9FA;
+  border-right: 1px solid #E5E7EA;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  transition: width 0.3s ease;
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
+  z-index: 1000;
+}
+
+.app-sidebar.collapsed {
+  width: 48px;
+}
+
+/* Sidebar Header */
+.sidebar-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #E5E7EA;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebar-logo img {
+  width: 71px;
+  height: 71px;
+  transition: all 0.3s ease;
+}
+
+.app-sidebar.collapsed .sidebar-logo img {
+  width: 40px;
+  height: 40px;
+}
+
+.sidebar-toggle {
+  background: none;
+  border: none;
+  color: #3C2D63;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-toggle:hover {
+  background-color: rgba(60, 45, 99, 0.1);
+}
+
+/* Sidebar Navigation */
+.sidebar-navigation {
+  padding: 1rem 0.75rem;
+}
+
+.sidebar-navigation-label {
+  color: #3C2D63;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-bottom: 1rem;
+  padding: 0 0.5rem;
+  text-align: left;
+  font-family: 'Poppins', sans-serif;
+}
+
+.app-sidebar.collapsed .sidebar-navigation-label {
+  display: none;
+}
+
+/* Sidebar Menu */
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sidebar-menu-item {
+  margin: 0;
+}
+
+.sidebar-menu-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 25px 10px;
+  border-radius: 8px;
+  width: 196px;
+  height: 51px;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #3C2D63;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  margin: 0;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.sidebar-menu-button:hover:not(.active) {
+  background-color: #F3F4F6;
+}
+
+.sidebar-menu-button.active {
+  background-color: #EADDFF;
+  color: #3C2D63;
+  font-weight: 600;
+  padding: 25px 10px;
+  height: 51px;
+  width: 196px;
+}
+
+.sidebar-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  color: #3C2D63;
+  flex-shrink: 0;
+}
+
+.sidebar-label {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  font-weight: 500;
+  color: inherit;
+  white-space: nowrap;
+}
+
+.app-sidebar.collapsed .sidebar-label {
+  display: none;
+}
+
+/* Collapsed state centering */
+.app-sidebar.collapsed .sidebar-menu-button {
+  justify-content: center;
+  width: 32px;
+  height: 51px;
+  padding: 25px 0;
+}
+
+.app-sidebar.collapsed .sidebar-icon {
+  margin: 0 auto;
+}
+
+.app-sidebar.collapsed .sidebar-menu {
+  align-items: center;
+}
+
+.app-sidebar.collapsed .sidebar-menu-item {
+  display: flex;
+  justify-content: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .app-sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  
+  .app-sidebar.collapsed {
+    width: 100%;
+  }
+  
+  .sidebar-header {
+    padding: 1rem;
+  }
+  
+  .sidebar-navigation {
+    padding: 0.5rem;
+  }
+  
+  .sidebar-menu-button {
+    width: 100%;
+  }
+  
+  .sidebar-menu-button.active {
+    width: 100%;
+  }
+}

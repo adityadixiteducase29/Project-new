@@ -149,23 +149,23 @@ const Dashboard = () => {
     <div className="space-y-8">
       {/* Welcome Header */}
       <div className="flex flex-col gap-2">
-        <h1 className="dashboard-title">
+        <h1 className="dashboard-title-admin">
           Dashboard
         </h1>
       </div>
-      <div className="card-container-dashboard">
+      <div className="card-container-dashboard-admin">
         {cards.map((card, index) => (
-          <div className="card-dashboard h-[102px] w-[237px]" key={index}>
+          <div className="card-dashboard-admin h-[102px] w-[237px]" key={index}>
             <div className="flex gap-2">
-              <div className="card-icon-dashboard">{card.icon}</div>
-              <div className="card-label-dashboard">{card.label}</div>
+              <div className="card-icon-dashboard-admin">{card.icon}</div>
+              <div className="card-label-dashboard-admin">{card.label}</div>
             </div>
-            <div className="card-value-dashboard">{card.value}</div>
+            <div className="card-value-dashboard-admin">{card.value}</div>
           </div>
         ))}
       </div>
       <div className="flex flex-col gap-2 mt-4">
-        <h1 className="basic-title mb-4">
+        <h1 className="basic-title-admin mb-4">
           Clients
         </h1>
       </div>
