@@ -14,6 +14,7 @@ import Application from './pages/Application'
 import Help from './pages/Help'
 import NotFound from './pages/NotFound'
 import Login from './pages/Login'
+import UserForm from './pages/UserForm'
 // Verifier components
 import VerifierDashboard from './pages/VerifierDashboard'
 import VerifierApplications from './pages/VerifierApplications'
@@ -97,6 +98,9 @@ const AppRoutes = () => {
       <Route path="/login" element={
         isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />
       } />
+      
+      {/* Public UserForm route - accessible without authentication */}
+              <Route path="/user-form/:companyId" element={<UserForm />} />
       
       {/* Root redirect */}
       <Route path="/" element={

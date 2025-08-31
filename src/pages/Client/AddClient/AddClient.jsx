@@ -5,7 +5,7 @@ import { useAppSelector } from '../../../store/hooks';
 import apiService from '../../../services/api';
 import './AddClient.css';
 
-const AddClient = ({ modal, toggle }) => {
+const AddClient = ({ modal, toggle, onClientAdded }) => {
   const { user } = useAppSelector(state => state.auth);
   const [formData, setFormData] = useState({
     clientName: '',
@@ -48,8 +48,8 @@ const AddClient = ({ modal, toggle }) => {
 
       // Prepare data for API
       const clientData = {
-        client_name: formData.clientName,
-        client_email: formData.clientEmail,
+        name: formData.clientName,
+        email: formData.clientEmail,
         password: formData.password,
         services: selectedServices
       };
@@ -64,14 +64,13 @@ const AddClient = ({ modal, toggle }) => {
       apiService.setToken(token);
 
       // Make API call using the API service
-      const result = await apiService.request('/clients', {
+      const result = await apiService.request('/companies', {
         method: 'POST',
         body: JSON.stringify(clientData)
       });
 
       // Success - close modal and reset form
       console.log('Client created successfully:', result.data);
-      toggle();
       
       // Reset form
       setFormData({
@@ -88,6 +87,11 @@ const AddClient = ({ modal, toggle }) => {
         tenancy_information: false,
         residential: false
       });
+
+      // Call the callback to refresh the client list
+      if (onClientAdded) {
+        onClientAdded();
+      }
 
       // You can add a success notification here
       alert('Client created successfully!');
@@ -107,11 +111,6 @@ const AddClient = ({ modal, toggle }) => {
       <Modal isOpen={modal} toggle={toggle} size="lg" className="add-client-modal">
         <ModalHeader toggle={toggle} className="add-client-header">
           <h2 className="modal-title">Add Client</h2>
-          <button className="close-button" onClick={toggle}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
         </ModalHeader>
         
         <ModalBody className="add-client-body">
@@ -125,7 +124,7 @@ const AddClient = ({ modal, toggle }) => {
           {/* Form Fields */}
           <div className="form-section">
             <Row className="mb-3">
-              <Col md={6}>
+              <Col md={12} className='mb-3'>
                 <TextField
                   fullWidth
                   name="clientName"
@@ -139,7 +138,7 @@ const AddClient = ({ modal, toggle }) => {
                   className="form-field"
                 />
               </Col>
-              <Col md={6}>
+              <Col md={12} className='mb-3'>
                 <TextField
                   fullWidth
                   name="clientEmail"
@@ -153,9 +152,7 @@ const AddClient = ({ modal, toggle }) => {
                   className="form-field"
                 />
               </Col>
-            </Row>
-            <Row>
-              <Col md={6}>
+              <Col md={12} className='mb-3'>
                 <TextField
                   fullWidth
                   name="password"
@@ -170,6 +167,8 @@ const AddClient = ({ modal, toggle }) => {
                 />
               </Col>
             </Row>
+            <Row>
+            </Row>
           </div>
 
           {/* Divider */}
@@ -177,7 +176,7 @@ const AddClient = ({ modal, toggle }) => {
 
           {/* Services Section */}
           <div className="services-section">
-            <h3 className="services-title">Services ({selectedCount}/8)</h3>
+            <h3 className="services-title">Services ({selectedCount}/7)</h3>
             <div className="services-grid">
               <div className="service-item">
                 <FormControlLabel

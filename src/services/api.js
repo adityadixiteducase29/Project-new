@@ -272,6 +272,39 @@ class ApiService {
         }
     }
 
+    // Applications Methods
+    async getAllApplications(filters = {}) {
+        try {
+            const queryParams = new URLSearchParams();
+            Object.keys(filters).forEach(key => {
+                if (filters[key]) {
+                    queryParams.append(key, filters[key]);
+                }
+            });
+            
+            const endpoint = `/applications${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+            return await this.request(endpoint);
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || 'Failed to fetch applications',
+                error: error
+            };
+        }
+    }
+
+    async getApplicationById(id) {
+        try {
+            return await this.request(`/applications/${id}`);
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || 'Failed to fetch application',
+                error: error
+            };
+        }
+    }
+
     // Health Check
     async healthCheck() {
         try {

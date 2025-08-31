@@ -33,7 +33,6 @@ const Datatable = ({ tabledata, columns, pageSize = 8, ...rest }) => (
   <div className="datatable-container">
     <DataGrid
       className="datatable-grid"
-      autoHeight
       rows={tabledata}
       columns={columns}
       pageSize={pageSize}

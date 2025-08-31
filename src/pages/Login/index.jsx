@@ -169,13 +169,13 @@ const Login = () => {
                     >
                       Verifier Login
                     </Button>
-                    <Button 
+                    {/* <Button 
                       size="sm" 
                       color="outline-info"
                       onClick={showStorageDebug}
                     >
                       Debug Storage
-                    </Button>
+                    </Button> */}
                   </div>
                 </div>
               )}

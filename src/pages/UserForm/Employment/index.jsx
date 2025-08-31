@@ -6,36 +6,38 @@ import {
   Paper,
   CardContent,
   CardHeader,
-  Divider
+  Divider,
+  IconButton,
+  Chip
 } from '@mui/material'
 import { Row, Col, Input, Label } from 'reactstrap'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { Close } from '@mui/icons-material'
 import Upload from '../Svg/Upload.svg'
 import './index.css'
 
-const EmploymentDetails = () => {
+const EmploymentDetails = ({ formData, updateFormData }) => {
   const [fromDate, setFromDate] = useState(null)
   const [toDate, setToDate] = useState(null)
-  const [selectedFiles, setSelectedFiles] = useState({
-    offerLetter: null,
-    paySlip: null,
-    resignation: null,
-    experienceLetter: null,
-    bankStatement: null,
-    employmentCheckResult: null,
-    employmentCertificate: null
-  })
 
   const handleFileChange = (field, file) => {
-    setSelectedFiles(prev => ({
-      ...prev,
-      [field]: file
-    }))
+    updateFormData({ [field]: file })
   }
 
   const CustomFileUpload = ({ field, accept, id }) => {
+    const uploadedFile = formData[field];
+    
+    const handleClearFile = () => {
+      updateFormData({ [field]: null });
+      // Clear the input value
+      const fileInput = document.getElementById(id);
+      if (fileInput) {
+        fileInput.value = '';
+      }
+    };
+
     return (
       <div className="file-upload-container">
         <Input
@@ -45,12 +47,44 @@ const EmploymentDetails = () => {
           accept={accept}
           className="file-upload-input"
         />
-        <Label 
-          for={id} 
-          className="btn btn-outline-secondary mb-0 file-upload-button file-upload-label"
-        >
-          Choose file
-        </Label>
+        
+        {uploadedFile ? (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}>
+            <Chip
+              label={uploadedFile.name.length > 25 ? uploadedFile.name.substring(0, 25) + '...' : uploadedFile.name}
+              variant="outlined"
+              color="primary"
+              sx={{ 
+                maxWidth: 200,
+                '& .MuiChip-label': {
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap'
+                }
+              }}
+            />
+            <IconButton
+              size="small"
+              onClick={handleClearFile}
+              sx={{ 
+                color: '#d32f2f',
+                '&:hover': { 
+                  backgroundColor: '#ffebee',
+                  color: '#c62828'
+                }
+              }}
+            >
+              <Close fontSize="small" />
+            </IconButton>
+          </Box>
+        ) : (
+          <Label 
+            for={id} 
+            className="btn btn-outline-secondary mb-0 file-upload-button file-upload-label"
+          >
+            Choose file
+          </Label>
+        )}
       </div>
     )
   }
@@ -83,6 +117,8 @@ const EmploymentDetails = () => {
                   placeholder="Enter"
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
+                  value={formData.company_name || ''}
+                  onChange={(e) => updateFormData({ company_name: e.target.value })}
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       height: 56,
@@ -106,6 +142,8 @@ const EmploymentDetails = () => {
                   placeholder="Enter"
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
+                  value={formData.designation || ''}
+                  onChange={(e) => updateFormData({ designation: e.target.value })}
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       height: 56,
@@ -130,6 +168,8 @@ const EmploymentDetails = () => {
                   placeholder="Enter"
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
+                  value={formData.employee_id || ''}
+                  onChange={(e) => updateFormData({ employee_id: e.target.value })}
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       height: 56,
@@ -153,6 +193,8 @@ const EmploymentDetails = () => {
                   placeholder="Enter"
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
+                  value={formData.employment_location || ''}
+                  onChange={(e) => updateFormData({ employment_location: e.target.value })}
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       height: 56,
@@ -177,6 +219,8 @@ const EmploymentDetails = () => {
                   placeholder="Enter"
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
+                  value={formData.hr_number || ''}
+                  onChange={(e) => updateFormData({ hr_number: e.target.value })}
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       height: 56,
@@ -200,6 +244,8 @@ const EmploymentDetails = () => {
                   placeholder="Enter"
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
+                  value={formData.hr_email || ''}
+                  onChange={(e) => updateFormData({ hr_email: e.target.value })}
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       height: 56,
@@ -224,6 +270,8 @@ const EmploymentDetails = () => {
                   placeholder="Enter"
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
+                  value={formData.work_responsibility || ''}
+                  onChange={(e) => updateFormData({ work_responsibility: e.target.value })}
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       height: 56,
@@ -247,6 +295,8 @@ const EmploymentDetails = () => {
                   placeholder="Enter"
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
+                  value={formData.salary || ''}
+                  onChange={(e) => updateFormData({ salary: e.target.value })}
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       height: 56,
@@ -268,7 +318,10 @@ const EmploymentDetails = () => {
                 <DatePicker
                   label="From"
                   value={fromDate}
-                  onChange={(newDate) => setFromDate(newDate)}
+                  onChange={(newDate) => {
+                    setFromDate(newDate);
+                    updateFormData({ employment_from_date: newDate ? newDate.toISOString().split('T')[0] : '' });
+                  }}
                   slotProps={{
                     textField: {
                       fullWidth: true,
@@ -301,7 +354,10 @@ const EmploymentDetails = () => {
                 <DatePicker
                   label="To"
                   value={toDate}
-                  onChange={(newDate) => setToDate(newDate)}
+                  onChange={(newDate) => {
+                    setToDate(newDate);
+                    updateFormData({ employment_to_date: newDate ? newDate.toISOString().split('T')[0] : '' });
+                  }}
                   slotProps={{
                     textField: {
                       fullWidth: true,
@@ -338,6 +394,8 @@ const EmploymentDetails = () => {
                   placeholder="Enter"
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
+                  value={formData.reason_of_leaving || ''}
+                  onChange={(e) => updateFormData({ reason_of_leaving: e.target.value })}
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       height: 56,
@@ -362,6 +420,8 @@ const EmploymentDetails = () => {
                   placeholder="Enter"
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
+                  value={formData.previous_manager || ''}
+                  onChange={(e) => updateFormData({ previous_manager: e.target.value })}
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       height: 56,
@@ -403,7 +463,7 @@ const EmploymentDetails = () => {
                 </div>
               </div>
               <CustomFileUpload 
-                field="offerLetter"
+                field="offer_letter"
                 accept=".jpg,.jpeg,.png,.pdf"
                 id="offerLetterUpload"
               />
@@ -423,7 +483,7 @@ const EmploymentDetails = () => {
                 </div>
               </div>
               <CustomFileUpload 
-                field="paySlip"
+                field="pay_slip"
                 accept=".jpg,.jpeg,.png,.pdf"
                 id="paySlipUpload"
               />
@@ -463,7 +523,7 @@ const EmploymentDetails = () => {
                 </div>
               </div>
               <CustomFileUpload 
-                field="experienceLetter"
+                field="experience_letter"
                 accept=".jpg,.jpeg,.png,.pdf"
                 id="experienceLetterUpload"
               />
@@ -483,7 +543,7 @@ const EmploymentDetails = () => {
                 </div>
               </div>
               <CustomFileUpload 
-                field="bankStatement"
+                field="bank_statement"
                 accept=".jpg,.jpeg,.png,.pdf"
                 id="bankStatementUpload"
               />
@@ -503,7 +563,7 @@ const EmploymentDetails = () => {
                 </div>
               </div>
               <CustomFileUpload 
-                field="employmentCheckResult"
+                field="employment_check_result"
                 accept=".jpg,.jpeg,.png,.pdf"
                 id="employmentCheckResultUpload"
               />
@@ -523,7 +583,7 @@ const EmploymentDetails = () => {
                 </div>
               </div>
               <CustomFileUpload 
-                field="employmentCertificate"
+                field="employment_certificate"
                 accept=".jpg,.jpeg,.png,.pdf"
                 id="employmentCertificateUpload"
               />

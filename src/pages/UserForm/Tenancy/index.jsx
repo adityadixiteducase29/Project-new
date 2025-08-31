@@ -10,7 +10,7 @@ import {
 } from '@mui/material'
 import { Row, Col } from 'reactstrap'
 
-const Tenancy = () => {
+const Tenancy = ({ formData, updateFormData }) => {
   return (
     <Paper elevation={1} sx={{ borderRadius: 3, border: '1px solid #E5E7EA' }}>
       <CardHeader
@@ -38,6 +38,8 @@ const Tenancy = () => {
                 placeholder="Enter"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
+                value={formData.house_owner_name || ''}
+                onChange={(e) => updateFormData({ house_owner_name: e.target.value })}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -61,6 +63,8 @@ const Tenancy = () => {
                 placeholder="Enter"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
+                value={formData.house_owner_contact || ''}
+                onChange={(e) => updateFormData({ house_owner_contact: e.target.value })}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -85,6 +89,8 @@ const Tenancy = () => {
                 placeholder="Enter"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
+                value={formData.house_owner_address || ''}
+                onChange={(e) => updateFormData({ house_owner_address: e.target.value })}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -109,6 +115,8 @@ const Tenancy = () => {
                 placeholder="Enter"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
+                value={formData.residing || ''}
+                onChange={(e) => updateFormData({ residing: e.target.value })}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,

@@ -10,7 +10,7 @@ import {
 } from '@mui/material'
 import { Row, Col } from 'reactstrap'
 
-const Reference = () => {
+const Reference = ({ formData, updateFormData }) => {
   return (
     <Paper elevation={1} sx={{ borderRadius: 3, border: '1px solid #E5E7EA' }}>
       <CardHeader
@@ -38,6 +38,8 @@ const Reference = () => {
                 placeholder="Enter"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
+                value={formData.reference1_name || ''}
+                onChange={(e) => updateFormData({ reference1_name: e.target.value })}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -61,6 +63,8 @@ const Reference = () => {
                 placeholder="Enter"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
+                value={formData.reference1_address || ''}
+                onChange={(e) => updateFormData({ reference1_address: e.target.value })}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -85,6 +89,8 @@ const Reference = () => {
                 placeholder="Enter"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
+                value={formData.reference1_relation || ''}
+                onChange={(e) => updateFormData({ reference1_relation: e.target.value })}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -108,6 +114,8 @@ const Reference = () => {
                 placeholder="Enter"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
+                value={formData.reference1_contact || ''}
+                onChange={(e) => updateFormData({ reference1_contact: e.target.value })}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -131,6 +139,8 @@ const Reference = () => {
                 placeholder="Enter"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
+                value={formData.reference1_police_station || ''}
+                onChange={(e) => updateFormData({ reference1_police_station: e.target.value })}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -166,6 +176,8 @@ const Reference = () => {
                 placeholder="Enter"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
+                value={formData.reference2_name || ''}
+                onChange={(e) => updateFormData({ reference2_name: e.target.value })}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -189,6 +201,8 @@ const Reference = () => {
                 placeholder="Enter"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
+                value={formData.reference2_address || ''}
+                onChange={(e) => updateFormData({ reference2_address: e.target.value })}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -213,6 +227,8 @@ const Reference = () => {
                 placeholder="Enter"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
+                value={formData.reference2_relation || ''}
+                onChange={(e) => updateFormData({ reference2_relation: e.target.value })}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -236,6 +252,8 @@ const Reference = () => {
                 placeholder="Enter"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
+                value={formData.reference2_contact || ''}
+                onChange={(e) => updateFormData({ reference2_contact: e.target.value })}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -259,6 +277,8 @@ const Reference = () => {
                 placeholder="Enter"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
+                value={formData.reference2_police_station || ''}
+                onChange={(e) => updateFormData({ reference2_police_station: e.target.value })}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -294,6 +314,8 @@ const Reference = () => {
                 placeholder="Enter"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
+                value={formData.reference3_name || ''}
+                onChange={(e) => updateFormData({ reference3_name: e.target.value })}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -317,6 +339,8 @@ const Reference = () => {
                 placeholder="Enter"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
+                value={formData.reference3_address || ''}
+                onChange={(e) => updateFormData({ reference3_address: e.target.value })}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -341,6 +365,8 @@ const Reference = () => {
                 placeholder="Enter"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
+                value={formData.reference3_relation || ''}
+                onChange={(e) => updateFormData({ reference3_relation: e.target.value })}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -364,6 +390,8 @@ const Reference = () => {
                 placeholder="Enter"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
+                value={formData.reference3_contact || ''}
+                onChange={(e) => updateFormData({ reference3_contact: e.target.value })}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -387,6 +415,8 @@ const Reference = () => {
                 placeholder="Enter"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
+                value={formData.reference3_police_station || ''}
+                onChange={(e) => updateFormData({ reference3_police_station: e.target.value })}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -420,6 +450,8 @@ const Reference = () => {
                 InputLabelProps={{ shrink: true }}
                 multiline
                 minRows={2}
+                value={formData.reference_address || ''}
+                onChange={(e) => updateFormData({ reference_address: e.target.value })}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     '& fieldset': {

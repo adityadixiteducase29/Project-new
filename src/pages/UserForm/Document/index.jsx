@@ -6,33 +6,33 @@ import {
   Paper,
   CardContent,
   CardHeader,
-  Divider
+  Divider,
+  IconButton,
+  Chip
 } from '@mui/material'
 import { Row, Col, Input, Label } from 'reactstrap'
+import { Close } from '@mui/icons-material'
 import './index.css'
 import Upload from '../Svg/Upload.svg'
 
-const Document = () => {
-  const [selectedFiles, setSelectedFiles] = useState({
-    aadharFront: null,
-    aadharBack: null,
-    passportPhoto: null,
-    panCard: null,
-    voterId: null,
-    drivingLicense: null,
-    passport: null,
-    electricityBill: null,
-    otherDocument: null
-  })
+const Document = ({ formData, updateFormData }) => {
 
   const handleFileChange = (field, file) => {
-    setSelectedFiles(prev => ({
-      ...prev,
-      [field]: file
-    }))
+    updateFormData({ [field]: file })
   }
 
   const CustomFileUpload = ({ field, accept, id }) => {
+    const uploadedFile = formData[field];
+    
+    const handleClearFile = () => {
+      updateFormData({ [field]: null });
+      // Clear the input value
+      const fileInput = document.getElementById(id);
+      if (fileInput) {
+        fileInput.value = '';
+      }
+    };
+
     return (
       <div className="file-upload-container">
         <Input
@@ -42,12 +42,44 @@ const Document = () => {
           accept={accept}
           className="file-upload-input"
         />
-        <Label 
-          for={id} 
-          className="btn btn-outline-secondary mb-0 file-upload-button file-upload-label"
-        >
-          Choose file
-        </Label>
+        
+        {uploadedFile ? (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}>
+            <Chip
+              label={uploadedFile.name.length > 25 ? uploadedFile.name.substring(0, 25) + '...' : uploadedFile.name}
+              variant="outlined"
+              color="primary"
+              sx={{ 
+                maxWidth: 200,
+                '& .MuiChip-label': {
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap'
+                }
+              }}
+            />
+            <IconButton
+              size="small"
+              onClick={handleClearFile}
+              sx={{ 
+                color: '#d32f2f',
+                '&:hover': { 
+                  backgroundColor: '#ffebee',
+                  color: '#c62828'
+                }
+              }}
+            >
+              <Close fontSize="small" />
+            </IconButton>
+          </Box>
+        ) : (
+          <Label 
+            for={id} 
+            className="btn btn-outline-secondary mb-0 file-upload-button file-upload-label"
+          >
+            Choose file
+          </Label>
+        )}
       </div>
     )
   }
@@ -79,6 +111,8 @@ const Document = () => {
                 placeholder="Enter"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
+                value={formData.aadhar_number || ''}
+                onChange={(e) => updateFormData({ aadhar_number: e.target.value })}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -102,6 +136,8 @@ const Document = () => {
                 placeholder="Enter"
                 variant="outlined"
                 InputLabelProps={{ shrink: true }}
+                value={formData.pan_number || ''}
+                onChange={(e) => updateFormData({ pan_number: e.target.value })}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     height: 56,
@@ -142,11 +178,11 @@ const Document = () => {
                 </Typography>
               </div>
             </div>
-            <CustomFileUpload 
-              field="aadharFront"
-              accept=".jpg,.jpeg,.png,.pdf"
-              id="aadharFrontUpload"
-            />
+                          <CustomFileUpload 
+                field="aadhar_front"
+                accept=".jpg,.jpeg,.png,.pdf"
+                id="aadharFrontUpload"
+              />
           </div>
 
           {/* Aadhar Card Back Side Upload */}
@@ -162,11 +198,11 @@ const Document = () => {
                 </Typography>
               </div>
             </div>
-            <CustomFileUpload 
-              field="aadharBack"
-              accept=".jpg,.jpeg,.png,.pdf"
-              id="aadharBackUpload"
-            />
+                          <CustomFileUpload 
+                field="aadhar_back"
+                accept=".jpg,.jpeg,.png,.pdf"
+                id="aadharBackUpload"
+              />
           </div>
 
           {/* Passport Size Photo Upload */}
@@ -182,11 +218,11 @@ const Document = () => {
                 </Typography>
               </div>
             </div>
-            <CustomFileUpload 
-              field="passportPhoto"
-              accept=".jpg,.jpeg,.png,.pdf"
-              id="passportPhotoUpload"
-            />
+                          <CustomFileUpload 
+                field="passport_photo"
+                accept=".jpg,.jpeg,.png,.pdf"
+                id="passportPhotoUpload"
+              />
           </div>
 
           {/* PAN Card Upload */}
@@ -202,11 +238,11 @@ const Document = () => {
                 </Typography>
               </div>
             </div>
-            <CustomFileUpload 
-              field="panCard"
-              accept=".jpg,.jpeg,.png,.pdf"
-              id="panCardUpload"
-            />
+                          <CustomFileUpload 
+                field="pan_card"
+                accept=".jpg,.jpeg,.png,.pdf"
+                id="panCardUpload"
+              />
           </div>
 
           {/* Voter ID Upload */}
@@ -222,11 +258,11 @@ const Document = () => {
                 </Typography>
               </div>
             </div>
-            <CustomFileUpload 
-              field="voterId"
-              accept=".jpg,.jpeg,.png,.pdf"
-              id="voterIdUpload"
-            />
+                          <CustomFileUpload 
+                field="voter_id"
+                accept=".jpg,.jpeg,.png,.pdf"
+                id="voterIdUpload"
+              />
           </div>
 
           {/* Driving License Upload */}
@@ -242,11 +278,11 @@ const Document = () => {
                 </Typography>
               </div>
             </div>
-            <CustomFileUpload 
-              field="drivingLicense"
-              accept=".jpg,.jpeg,.png,.pdf"
-              id="drivingLicenseUpload"
-            />
+                          <CustomFileUpload 
+                field="driving_license"
+                accept=".jpg,.jpeg,.png,.pdf"
+                id="drivingLicenseUpload"
+              />
           </div>
 
           {/* Passport Upload */}
@@ -282,11 +318,11 @@ const Document = () => {
                 </Typography>
               </div>
             </div>
-            <CustomFileUpload 
-              field="electricityBill"
-              accept=".jpg,.jpeg,.png,.pdf"
-              id="electricityBillUpload"
-            />
+                          <CustomFileUpload 
+                field="ele"
+                accept=".jpg,.jpeg,.png,.pdf"
+                id="electricityBillUpload"
+              />
           </div>
 
           {/* Other Document Upload */}
@@ -302,11 +338,11 @@ const Document = () => {
                 </Typography>
               </div>
             </div>
-            <CustomFileUpload 
-              field="otherDocument"
-              accept=".jpg,.jpeg,.png,.pdf"
-              id="otherDocumentUpload"
-            />
+                          <CustomFileUpload 
+                field="other_document"
+                accept=".jpg,.jpeg,.png,.pdf"
+                id="otherDocumentUpload"
+              />
           </div>
         </Box>
 

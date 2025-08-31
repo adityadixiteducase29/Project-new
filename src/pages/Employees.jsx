@@ -23,15 +23,16 @@ const Employees = () => {
 
   // Add linkCopied to your initial data for each row
   const initialTableData = [
-    { id: 1, name: 'Samsung', contact: '36', pending: 'Samsung', onlineId: '7757845', services: 5, linkCopied: true },
-    { id: 2, name: 'Apple', contact: '48', pending: 'Apple', onlineId: '7757845', services: 4, linkCopied: false },
-    { id: 3, name: 'Google', contact: '55', pending: 'Samsung', onlineId: '7757845', services: 5, linkCopied: false },
-    { id: 4, name: 'HDFC', contact: '320', pending: 'Samsung', onlineId: '7757845', services: 5, linkCopied: false },
-    { id: 5, name: 'Axis', contact: '1445298996', pending: 'Samsung', onlineId: '7757845', services: 5, linkCopied: false },
-    { id: 6, name: 'Microsoft', contact: '1445298996', pending: 'Samsung', onlineId: '7757845', services: 1, linkCopied: false },
-    { id: 7, name: 'JBL', contact: '1445298996', pending: 'Samsung', onlineId: '7757845', services: 5, linkCopied: false },
-    { id: 8, name: 'Boat', contact: '1445298996', pending: 'Samsung', onlineId: '7757845', services: 8, linkCopied: false },
+    { id: 1, name: 'Aarav Sharma', contact: '9876543210', pending: '5', onlineId: '7757845', services: 5, linkCopied: true },
+    { id: 2, name: 'Emily Johnson', contact: '9123456780', pending: '4', onlineId: '7757845', services: 4, linkCopied: false },
+    { id: 3, name: 'Rohan Patel', contact: '9988776655', pending: '5', onlineId: '7757845', services: 5, linkCopied: false },
+    { id: 4, name: 'Sophia Williams', contact: '9012345678', pending: '5', onlineId: '7757845', services: 5, linkCopied: false },
+    { id: 5, name: 'Aditya Dixit', contact: '9876501234', pending: '5', onlineId: '7757845', services: 5, linkCopied: false },
+    { id: 6, name: 'Olivia Brown', contact: '9765432109', pending: '5', onlineId: '7757845', services: 1, linkCopied: false },
+    { id: 7, name: 'Karan Mehta', contact: '9321456789', pending: '5', onlineId: '7757845', services: 5, linkCopied: false },
   ];
+  
+  
 
   const [tabledata, setTabledata] = useState(initialTableData);
 
@@ -103,53 +104,14 @@ const Employees = () => {
           {params.row.services}
         </div>
       ) 
-    },
-    {
-      field: 'link',
-      headerName: 'Link',
-      flex: 1,
-      minWidth: 120,
-      headerAlign: 'left',
-      sortable: false,
-      renderCell: (params) => {
-        const { linkCopied, id } = params.row;
-        return linkCopied ? (
-          <Link className="datatable-link-copied">
-            Link copied
-          </Link>
-        ) : (
-          <Link
-            className="datatable-link"
-            onClick={() => handleCopyLink(id)}
-          >
-            Copy link
-          </Link>
-        );
-      },
-    },
-    {
-      field: 'edit',
-      headerName: 'Edit',
-      flex: 0.5,
-      minWidth: 60,
-      headerAlign: 'left',
-      sortable: false,
-      renderCell: (params) => (
-        <IconButton 
-          className="datatable-edit-button"
-          onClick={() => handleEditClick(params.row)}
-        >
-          <EditOutlinedIcon className="datatable-edit-icon" />
-        </IconButton>
-      ),
-    },
+    }
   ];
 
   return (
     <div className="space-y-8">
       {/* Welcome Header */}
       <div className="flex flex-col gap-2">
-        <h1 className="dashboard-title">
+        <h1 className="dashboard-title" style={{color:"#4F378B"}}>
           Employees
         </h1>
       </div>

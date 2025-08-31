@@ -1,215 +1,170 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Search, Chat, Book, VideoLibrary, Launch, Email, Phone } from "@mui/icons-material";
+import React from 'react'
+import {
+  Typography,
+  Box,
+  Paper,
+  CardContent,
+  CardHeader,
+  Divider,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails
+} from '@mui/material'
+import { ExpandMore, Help, Support, Book, VideoLibrary } from '@mui/icons-material'
+import './VerifierHelp/index.css'
 
-export default function Help() {
-  const helpCategories = [
+const VerifierHelp = () => {
+  const helpSections = [
     {
       title: "Getting Started",
-      description: "Learn the basics of using the dashboard",
-      icon: Book,
-      articles: ["Dashboard Overview", "Creating Your First Project", "User Management", "Settings Guide"]
+      icon: <Help />,
+      content: "Learn the basics of document verification and how to use the verifier dashboard effectively.",
+      items: [
+        "Understanding the verification process",
+        "Navigating the dashboard",
+        "Setting up your profile",
+        "Understanding priority levels"
+      ]
+    },
+    {
+      title: "Verification Guidelines",
+      icon: <Book />,
+      content: "Comprehensive guidelines for verifying different types of documents and handling edge cases.",
+      items: [
+        "Aadhar Card verification standards",
+        "PAN Card verification process",
+        "Passport verification requirements",
+        "Common verification errors to avoid"
+      ]
     },
     {
       title: "Video Tutorials",
-      description: "Watch step-by-step video guides",
-      icon: VideoLibrary,
-      articles: ["Dashboard Walkthrough", "Client Management", "Application Deployment", "Troubleshooting"]
+      icon: <VideoLibrary />,
+      content: "Step-by-step video guides for various verification processes and dashboard features.",
+      items: [
+        "Document verification walkthrough",
+        "Dashboard navigation tutorial",
+        "Priority management guide",
+        "Reporting and analytics overview"
+      ]
     },
     {
-      title: "API Documentation",
-      description: "Technical documentation for developers",
-      icon: Chat,
-      articles: ["API Reference", "Authentication", "Rate Limits", "SDKs & Libraries"]
-    }
-  ];
-
-  const faqs = [
-    {
-      question: "How do I add a new client?",
-      answer: "Navigate to the Client section and click the 'Add Client' button. Fill in the required information and save."
-    },
-    {
-      question: "How can I deploy a new application?",
-      answer: "Go to the Application tab and click 'Deploy New App'. Follow the deployment wizard to configure your application settings."
-    },
-    {
-      question: "What should I do if my application is down?",
-      answer: "Check the Application status in the dashboard. If the issue persists, contact our support team immediately."
-    },
-    {
-      question: "How do I reset my password?",
-      answer: "Click on your profile avatar and select 'Account Settings'. You can change your password in the security section."
+      title: "Support & Contact",
+      icon: <Support />,
+      content: "Get in touch with our support team for technical issues or verification-related questions.",
+      items: [
+        "Technical support contact",
+        "Verification process questions",
+        "Dashboard feature requests",
+        "Emergency contact information"
+      ]
     }
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
-      <div className="text-center space-y-4">
-        <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-          Help Center
+      <div className="flex flex-col gap-2">
+        <h1 className="dashboard-title">
+          Verifier Help & Support
         </h1>
-        <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-          Find answers to your questions, explore documentation, and get the support you need
-        </p>
+        <p className="text-gray-600">Find answers to common questions and get support for verification tasks</p>
       </div>
-
-      {/* Search */}
-      <Card className="border-border/50 bg-gradient-to-br from-card to-card/50 backdrop-blur-sm">
-        <CardContent className="p-6">
-          <div className="relative max-w-2xl mx-auto">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input 
-              placeholder="Search for help articles, guides, or FAQs..." 
-              className="pl-12 h-12 text-base bg-background/50 border-border/50"
+      
+      {/* Quick Help Cards */}
+      <div className="help-cards-container">
+        {helpSections.map((section, index) => (
+          <Paper key={index} elevation={1} className="help-card">
+            <CardHeader
+              avatar={section.icon}
+              title={section.title}
+              className="help-card-header"
             />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Help Categories */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {helpCategories.map((category, index) => {
-          const IconComponent = category.icon;
-          return (
-            <Card 
-              key={index}
-              className="relative overflow-hidden border-border/50 bg-gradient-to-br from-card to-card/50 backdrop-blur-sm hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 group cursor-pointer"
-            >
-              <CardHeader className="pb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-primary/20 to-primary-glow/10 flex items-center justify-center">
-                    <IconComponent className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <CardTitle className="text-lg">{category.title}</CardTitle>
-                    <CardDescription>{category.description}</CardDescription>
-                  </div>
-                </div>
-              </CardHeader>
-              
-              <CardContent className="space-y-2">
-                {category.articles.map((article, articleIndex) => (
-                  <div 
-                    key={articleIndex}
-                    className="flex items-center justify-between p-2 rounded-md hover:bg-muted/30 transition-colors group/item"
-                  >
-                    <span className="text-sm font-medium">{article}</span>
-                    <Launch className="h-3 w-3 text-muted-foreground opacity-0 group-hover/item:opacity-100 transition-opacity" />
-                  </div>
+            <CardContent className="help-card-content">
+              <Typography variant="body2" color="text.secondary" className="help-card-description">
+                {section.content}
+              </Typography>
+              <ul className="help-card-list">
+                {section.items.map((item, itemIndex) => (
+                  <li key={itemIndex} className="help-card-list-item">
+                    {item}
+                  </li>
                 ))}
-              </CardContent>
-              
-              {/* Gradient overlay */}
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/5 to-transparent rounded-bl-full"></div>
-            </Card>
-          );
-        })}
-      </div>
-
-      {/* FAQ Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="space-y-4">
-          <h2 className="text-2xl font-bold">Frequently Asked Questions</h2>
-          
-          <div className="space-y-3">
-            {faqs.map((faq, index) => (
-              <Card 
-                key={index}
-                className="border-border/50 bg-gradient-to-br from-card to-card/50 backdrop-blur-sm"
-              >
-                <CardContent className="p-4">
-                  <h3 className="font-semibold mb-2">{faq.question}</h3>
-                  <p className="text-sm text-muted-foreground">{faq.answer}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Contact Support */}
-        <div className="space-y-4">
-          <h2 className="text-2xl font-bold">Contact Support</h2>
-          
-          <Card className="border-border/50 bg-gradient-to-br from-card to-card/50 backdrop-blur-sm">
-            <CardHeader>
-              <CardTitle>Get in Touch</CardTitle>
-              <CardDescription>
-                Can't find what you're looking for? Send us a message and we'll help you out.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/20">
-                  <Email className="h-5 w-5 text-primary" />
-                  <div>
-                    <p className="font-medium">Email Support</p>
-                    <p className="text-sm text-muted-foreground">support@example.com</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/20">
-                  <Phone className="h-5 w-5 text-primary" />
-                  <div>
-                    <p className="font-medium">Phone Support</p>
-                    <p className="text-sm text-muted-foreground">+1 (555) 123-4567</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="pt-4 border-t border-border/50 space-y-3">
-                <Input placeholder="Your Name" className="bg-background/50" />
-                <Input placeholder="Email Address" className="bg-background/50" />
-                <Textarea 
-                  placeholder="Describe your issue or question..." 
-                  className="bg-background/50 min-h-[100px]"
-                />
-                <Button className="w-full bg-gradient-to-r from-primary to-primary-glow hover:from-primary-dark hover:to-primary shadow-lg shadow-primary/25">
-                  Send Message
-                </Button>
-              </div>
+              </ul>
             </CardContent>
-          </Card>
-        </div>
+          </Paper>
+        ))}
       </div>
-
-      {/* Status and Updates */}
-      <Card className="border-border/50 bg-gradient-to-br from-card to-card/50 backdrop-blur-sm">
-        <CardHeader>
-          <CardTitle className="text-xl">System Status</CardTitle>
-          <CardDescription>Current status of our services and recent updates</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-3 h-3 rounded-full bg-green-500"></div>
-              <div>
-                <p className="font-medium">API Status</p>
-                <p className="text-sm text-muted-foreground">Operational</p>
-              </div>
+      
+      {/* FAQ Section */}
+      <div className="faq-section">
+        <Typography variant="h5" className="faq-title">
+          Frequently Asked Questions
+        </Typography>
+        
+        <Accordion className="faq-accordion">
+          <AccordionSummary expandIcon={<ExpandMore />}>
+            <Typography variant="h6">How do I handle high-priority applications?</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              High-priority applications should be reviewed within 2 hours of submission. 
+              These are typically marked with red priority indicators and require immediate attention.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+        
+        <Accordion className="faq-accordion">
+          <AccordionSummary expandIcon={<ExpandMore />}>
+            <Typography variant="h6">What should I do if I encounter a suspicious document?</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              If you encounter a suspicious document, mark it as "Rejected" and add detailed notes 
+              explaining your concerns. Contact your supervisor immediately for further guidance.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+        
+        <Accordion className="faq-accordion">
+          <AccordionSummary expandIcon={<ExpandMore />}>
+            <Typography variant="h6">How can I improve my verification speed?</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              Focus on one application at a time, use keyboard shortcuts, and familiarize yourself 
+              with common document patterns. Regular practice and following verification guidelines 
+              will naturally improve your speed.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+      </div>
+      
+      {/* Contact Support */}
+      <div className="contact-support-section">
+        <Paper elevation={1} className="contact-support-card">
+          <CardHeader
+            title="Need More Help?"
+            subheader="Our support team is available 24/7 to assist you"
+            className="contact-support-header"
+          />
+          <CardContent className="contact-support-content">
+            <Typography variant="body1" className="contact-support-text">
+              If you couldn't find the answer you're looking for, don't hesitate to contact our support team.
+            </Typography>
+            <div className="contact-support-buttons">
+              <button className="contact-button primary">
+                Contact Support
+              </button>
+              <button className="contact-button secondary">
+                Schedule Training
+              </button>
             </div>
-            
-            <div className="flex items-center gap-3">
-              <div className="w-3 h-3 rounded-full bg-green-500"></div>
-              <div>
-                <p className="font-medium">Dashboard</p>
-                <p className="text-sm text-muted-foreground">Operational</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center gap-3">
-              <div className="w-3 h-3 rounded-full bg-green-500"></div>
-              <div>
-                <p className="font-medium">Database</p>
-                <p className="text-sm text-muted-foreground">Operational</p>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Paper>
+      </div>
     </div>
   );
-}
+};
+
+export default VerifierHelp;

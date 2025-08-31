@@ -13,7 +13,10 @@ import {
   Divider,
   Paper,
   CardContent,
-  CardHeader
+  CardHeader,
+  Button,
+  Alert,
+  Snackbar
 } from '@mui/material'
 import { Row, Col } from "reactstrap"
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
@@ -21,15 +24,23 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { Search as SearchIcon } from '@mui/icons-material'
 
-const PersonalInformation = () => {
+const PersonalInformation = ({ companyId, formData, updateFormData }) => {
   const [date, setDate] = useState(null)
   const [useCurrentAddress, setUseCurrentAddress] = useState(false)
   const [gender, setGender] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
   const genderDropdown = [
     { id: 'male', label: 'Male' },
     { id: 'female', label: 'Female' },
     { id: 'other', label: 'Other' }
   ];
+
+  const handleInputChange = (field, value) => {
+    updateFormData({ [field]: value });
+  };
+
+
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -43,27 +54,61 @@ const PersonalInformation = () => {
           {/* Basic Details Section */}
           <Box sx={{ mb: 4 }}>
             <Typography variant="h6" className="section-header">Basic Details</Typography>
-            {/* Row 1: Full Name (50%) + Email ID (50%) */}
+            {/* Row 1: First Name (50%) + Last Name (50%) */}
             <Row className="g-3">
               <Col xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="Full Name"
-                  placeholder="Enter your full name"
+                  label="First Name *"
+                  placeholder="Enter your first name"
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
                   className="form-field"
+                  value={formData.applicant_first_name}
+                  onChange={(e) => handleInputChange('applicant_first_name', e.target.value)}
+                  required
                 />
               </Col>
               <Col xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="Email ID"
+                  label="Last Name *"
+                  placeholder="Enter your last name"
+                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  className="form-field"
+                  value={formData.applicant_last_name}
+                  onChange={(e) => handleInputChange('applicant_last_name', e.target.value)}
+                  required
+                />
+              </Col>
+            </Row>
+            {/* Row 2: Email ID (50%) + Contact Number (50%) */}
+            <Row className="g-3 mt-1">
+              <Col xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Email ID *"
                   type="email"
                   placeholder="Enter your email address"
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
                   className="form-field"
+                  value={formData.applicant_email}
+                  onChange={(e) => handleInputChange('applicant_email', e.target.value)}
+                  required
+                />
+              </Col>
+              <Col xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Contact Number"
+                  placeholder="Enter your phone number"
+                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  className="form-field"
+                  value={formData.applicant_phone}
+                  onChange={(e) => handleInputChange('applicant_phone', e.target.value)}
                 />
               </Col>
             </Row>
@@ -73,8 +118,8 @@ const PersonalInformation = () => {
                 <FormControl fullWidth>
                   <InputLabel className='gender-label' shrink>Gender</InputLabel>
                   <Select
-                    value={gender}
-                    onChange={(e) => setGender(e.target.value)}
+                    value={formData.gender || ''}
+                    onChange={(e) => handleInputChange('gender', e.target.value)}
                     displayEmpty
                     renderValue={(value) => {
                       if (value === '') {
@@ -94,24 +139,16 @@ const PersonalInformation = () => {
               <Col xs={12} md={4}>
                 <TextField
                   fullWidth
-                  label="Contact Number"
-                  placeholder="Enter your phone number"
-                  variant="outlined"
-                  InputLabelProps={{ shrink: true }}
-                  className="form-field"
-                />
-              </Col>
-              <Col xs={12} md={4}>
-                <TextField
-                  fullWidth
                   label="Languages"
                   placeholder="Enter languages you know"
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
                   className="form-field"
-                  InputProps={{
-                    startAdornment: <SearchIcon className="search-icon" />
-                  }}
+                  value={formData.languages || ''}
+                  onChange={(e) => handleInputChange('languages', e.target.value)}
+                  // InputProps={{
+                  //   startAdornment: <SearchIcon className="search-icon" />
+                  // }}
                 />
               </Col>
             </Row>
@@ -121,7 +158,10 @@ const PersonalInformation = () => {
                 <DatePicker
                   label="Date of Birth"
                   value={date}
-                  onChange={(newDate) => setDate(newDate)}
+                  onChange={(newDate) => {
+                    setDate(newDate);
+                    handleInputChange('applicant_dob', newDate ? newDate.toISOString().split('T')[0] : '');
+                  }}
                   slotProps={{
                     textField: {
                       fullWidth: true,
@@ -154,6 +194,8 @@ const PersonalInformation = () => {
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
                   className="form-field"
+                  value={formData.father_name || ''}
+                  onChange={(e) => handleInputChange('father_name', e.target.value)}
                 />
               </Col>
               <Col xs={12} md={4}>
@@ -164,6 +206,8 @@ const PersonalInformation = () => {
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
                   className="form-field"
+                  value={formData.mother_name || ''}
+                  onChange={(e) => handleInputChange('mother_name', e.target.value)}
                 />
               </Col>
               <Col xs={12} md={4}>
@@ -174,6 +218,8 @@ const PersonalInformation = () => {
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
                   className="form-field"
+                  value={formData.emergency_contact_number || ''}
+                  onChange={(e) => handleInputChange('emergency_contact_number', e.target.value)}
                 />
               </Col>
             </Row>
@@ -196,6 +242,8 @@ const PersonalInformation = () => {
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
                   className="form-field"
+                  value={formData.current_house_no || ''}
+                  onChange={(e) => handleInputChange('current_house_no', e.target.value)}
                 />
               </Col>
               <Col xs={12} md={6}>
@@ -206,6 +254,8 @@ const PersonalInformation = () => {
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
                   className="form-field"
+                  value={formData.current_area_locality || ''}
+                  onChange={(e) => handleInputChange('current_area_locality', e.target.value)}
                 />
               </Col>
             </Row>
@@ -219,6 +269,8 @@ const PersonalInformation = () => {
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
                   className="form-field"
+                  value={formData.current_area_locality_2 || ''}
+                  onChange={(e) => handleInputChange('current_area_locality_2', e.target.value)}
                 />
               </Col>
               <Col xs={12} md={6}>
@@ -229,6 +281,8 @@ const PersonalInformation = () => {
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
                   className="form-field"
+                  value={formData.current_district || ''}
+                  onChange={(e) => handleInputChange('current_district', e.target.value)}
                 />
               </Col>
             </Row>
@@ -242,6 +296,8 @@ const PersonalInformation = () => {
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
                   className="form-field"
+                  value={formData.current_police_station || ''}
+                  onChange={(e) => handleInputChange('current_police_station', e.target.value)}
                 />
               </Col>
               <Col xs={12} md={4}>
@@ -252,6 +308,8 @@ const PersonalInformation = () => {
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
                   className="form-field"
+                  value={formData.current_pincode || ''}
+                  onChange={(e) => handleInputChange('current_pincode', e.target.value)}
                 />
               </Col>
               <Col xs={12} md={4}>
@@ -262,6 +320,8 @@ const PersonalInformation = () => {
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
                   className="form-field"
+                  value={formData.current_tehsil || ''}
+                  onChange={(e) => handleInputChange('current_tehsil', e.target.value)}
                 />
               </Col>
             </Row>
@@ -275,6 +335,8 @@ const PersonalInformation = () => {
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
                   className="form-field"
+                  value={formData.current_post_office || ''}
+                  onChange={(e) => handleInputChange('current_post_office', e.target.value)}
                 />
               </Col>
               <Col xs={12} md={4}>
@@ -285,6 +347,8 @@ const PersonalInformation = () => {
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
                   className="form-field"
+                  value={formData.current_landmark || ''}
+                  onChange={(e) => handleInputChange('current_landmark', e.target.value)}
                 />
               </Col>
               <Col xs={12} md={4}></Col> {/* empty to complete row structure */}
@@ -301,10 +365,210 @@ const PersonalInformation = () => {
                   className="form-field"
                   multiline
                   minRows={2}
+                  value={formData.current_address || ''}
+                  onChange={(e) => handleInputChange('current_address', e.target.value)}
                 />
               </Col>
             </Row>
           </Box>
+
+          <Divider sx={{ my: 3 }} />
+
+          {/* Permanent Address Section */}
+          <Box sx={{ mb: 4 }}>
+            <Typography variant="h6" className="section-header">
+              Permanent Address
+            </Typography>
+            
+            {/* Checkbox for using current address as permanent */}
+            <Row className="g-3 mb-3">
+              <Col xs={12}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={formData.use_current_as_permanent || false}
+                      onChange={(e) => {
+                        const isChecked = e.target.checked;
+                        handleInputChange('use_current_as_permanent', isChecked);
+                        
+                        // If checked, copy current address to permanent address
+                        if (isChecked) {
+                          const addressFields = {
+                            permanent_house_no: formData.current_house_no || '',
+                            permanent_area_locality: formData.current_area_locality || '',
+                            permanent_area_locality_2: formData.current_area_locality_2 || '',
+                            permanent_district: formData.current_district || '',
+                            permanent_police_station: formData.current_police_station || '',
+                            permanent_pincode: formData.current_pincode || '',
+                            permanent_tehsil: formData.current_tehsil || '',
+                            permanent_post_office: formData.current_post_office || '',
+                            permanent_landmark: formData.current_landmark || '',
+                            permanent_address: formData.current_address || ''
+                          };
+                          
+                          // Update all permanent address fields at once
+                          updateFormData(addressFields);
+                        }
+                      }}
+                    />
+                  }
+                  label="Use Current Address as Permanent Address"
+                />
+              </Col>
+            </Row>
+
+            {/* Row 1: House No. (50%) + Area/Locality (50%) */}
+            <Row className="g-3">
+              <Col xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="House No."
+                  placeholder="Enter house number"
+                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  className="form-field"
+                  value={formData.permanent_house_no || ''}
+                  onChange={(e) => handleInputChange('permanent_house_no', e.target.value)}
+                />
+              </Col>
+              <Col xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Area/Locality"
+                  placeholder="Enter area or locality"
+                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  className="form-field"
+                  value={formData.permanent_area_locality || ''}
+                  onChange={(e) => handleInputChange('permanent_area_locality', e.target.value)}
+                />
+              </Col>
+            </Row>
+            {/* Row 2: Area/Locality 2 (50%) + District (50%) */}
+            <Row className="g-3 mt-1">
+              <Col xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Area/Locality 2"
+                  placeholder="Enter additional area details"
+                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  className="form-field"
+                  value={formData.permanent_area_locality_2 || ''}
+                  onChange={(e) => handleInputChange('permanent_area_locality_2', e.target.value)}
+                />
+              </Col>
+              <Col xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="District"
+                  placeholder="Enter district name"
+                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  className="form-field"
+                  value={formData.permanent_district || ''}
+                  onChange={(e) => handleInputChange('permanent_district', e.target.value)}
+                />
+              </Col>
+            </Row>
+            {/* Row 3: Police Station (33%) + Pincode (33%) + Tehsil (33%) */}
+            <Row className="g-3 mt-1">
+              <Col xs={12} md={4}>
+                <TextField
+                  fullWidth
+                  label="Police Station"
+                  placeholder="Enter police station name"
+                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  className="form-field"
+                  value={formData.permanent_police_station || ''}
+                  onChange={(e) => handleInputChange('permanent_police_station', e.target.value)}
+                />
+              </Col>
+              <Col xs={12} md={4}>
+                <TextField
+                  fullWidth
+                  label="Pincode"
+                  placeholder="Enter 6-digit pincode"
+                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  className="form-field"
+                  value={formData.permanent_pincode || ''}
+                  onChange={(e) => handleInputChange('permanent_pincode', e.target.value)}
+                />
+              </Col>
+              <Col xs={12} md={4}>
+                <TextField
+                  fullWidth
+                  label="Tehsil"
+                  placeholder="Enter tehsil name"
+                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  className="form-field"
+                  value={formData.permanent_tehsil || ''}
+                  onChange={(e) => handleInputChange('permanent_tehsil', e.target.value)}
+                />
+              </Col>
+            </Row>
+            {/* Row 4: Post Office (33%) + Landmark (33%) */}
+            <Row className="g-3 mt-1">
+              <Col xs={12} md={4}>
+                <TextField
+                  fullWidth
+                  label="Post Office"
+                  placeholder="Enter post office name"
+                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  className="form-field"
+                  value={formData.permanent_post_office || ''}
+                  onChange={(e) => handleInputChange('permanent_post_office', e.target.value)}
+                />
+              </Col>
+              <Col xs={12} md={4}>
+                <TextField
+                  fullWidth
+                  label="Landmark"
+                  placeholder="Enter nearby landmark"
+                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  className="form-field"
+                  value={formData.permanent_landmark || ''}
+                  onChange={(e) => handleInputChange('permanent_landmark', e.target.value)}
+                />
+              </Col>
+              <Col xs={12} md={4}></Col> {/* empty to complete row structure */}
+            </Row>
+            {/* Row 5: Permanent Address (100%) */}
+            <Row className="g-3 mt-1">
+              <Col xs={12}>
+                <TextField
+                  fullWidth
+                  label="Permanent Address"
+                  placeholder="Enter your complete permanent address"
+                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  className="form-field"
+                  multiline
+                  minRows={2}
+                  value={formData.permanent_address || ''}
+                  onChange={(e) => handleInputChange('permanent_address', e.target.value)}
+                />
+              </Col>
+            </Row>
+          </Box>
+
+          {/* Submit Button */}
+
+          {/* Success Message */}
+          {/* <Snackbar
+            open={submitted}
+            autoHideDuration={6000}
+            onClose={() => setSubmitted(false)}
+          >
+            <Alert onClose={() => setSubmitted(false)} severity="success">
+              Application submitted successfully!
+            </Alert>
+          </Snackbar> */}
         </CardContent>
       </Paper>
     </LocalizationProvider>
