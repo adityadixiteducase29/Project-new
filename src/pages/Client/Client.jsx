@@ -8,7 +8,9 @@ import React, { useState } from 'react';
 import Link from '@mui/material/Link';
 import IconButton from '@mui/material/IconButton';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-
+import { PlusCircle } from 'lucide-react';
+import { Button } from "reactstrap";
+import AddClient from "./AddClient/AddClient";
 const Client = () => {
   const handleEditClick = (row) => {
     console.log('Edit clicked for row:', row);
@@ -34,7 +36,8 @@ const Client = () => {
   ];
 
   const [tabledata, setTabledata] = useState(initialTableData);
-
+  const [modal, setModal] = useState(false);
+  const toggle = () => setModal(!modal);
   const handleCopyLink = (id) => {
     setTabledata(tabledata =>
       tabledata.map(row =>
@@ -148,10 +151,17 @@ const Client = () => {
   return (
     <div className="space-y-8">
       {/* Welcome Header */}
-      <div className="flex flex-col gap-2">
-        <h1 className="dashboard-title">
+      <div className="flex gap-2 justify-between align-center">
+        <h1 className="dashboard-title mb-0">
           Clients
         </h1>
+        <Button
+          className="custom-primary-button"
+          onClick={toggle}
+        >
+          <PlusCircle size={17}/>
+          Add Client
+        </Button>
       </div>
 
       <div>
@@ -161,6 +171,7 @@ const Client = () => {
           pageSize={8}
         />
       </div>
+      <AddClient modal={modal} toggle={toggle} />
     </div>
   );
 };
