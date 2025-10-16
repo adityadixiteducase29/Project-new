@@ -9,8 +9,9 @@
   gap: 18px;
   width: 100%;
   max-width: 1125px;
+  min-height: 400px;
   max-height: 600px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* DataGrid Styling */
@@ -291,6 +292,30 @@
   font-weight: 400 !important;
   color: #1B2128 !important;
   width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+/* Status Badge Styling */
+.datatable-cell-content span {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 100% !important;
+}
+
+/* DataGrid Cell Styling */
+.datatable-grid .MuiDataGrid-cell {
+  padding: 16px 20px !important;
+  border-bottom: 1px solid rgba(225, 225, 225, 1) !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.datatable-grid .MuiDataGrid-row:last-child .MuiDataGrid-cell {
+  border-bottom: none !important;
 } 
 .datatable-pagination-wrapper {
   width: 100%;

@@ -102,18 +102,6 @@ const VerifierApplications = () => {
       ) 
     },
     { 
-      field: 'documentType', 
-      headerName: 'Document Type', 
-      flex: 1, 
-      minWidth: 120,
-      headerAlign: 'left',
-      renderCell: (data) => (
-        <div className="datatable-cell-content">
-          {data.row.documentType}
-        </div>
-      ) 
-    },
-    { 
       field: 'submittedDate', 
       headerName: 'Submitted Date', 
       flex: 1, 

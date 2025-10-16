@@ -102,28 +102,17 @@ const Client = () => {
 
   const cards = [
     { label: 'Clients', value: clients.length, icon: <FaUsers /> },
-    { label: 'Total Verifications', value: 120, icon: <FaFingerprint /> },
-    { label: 'Pending', value: 96, icon: <FaHourglassHalf /> },
-    { label: 'This week', value: 16, icon: <FaCalendarWeek /> },
+    { label: 'Total Verifications', value: clients.reduce((sum, client) => sum + (client.pending_count || 0), 0), icon: <FaFingerprint /> },
+    { label: 'Pending', value: clients.reduce((sum, client) => sum + (client.pending_count || 0), 0), icon: <FaHourglassHalf /> },
+    { label: 'This week', value: clients.filter(client => {
+      const weekAgo = new Date();
+      weekAgo.setDate(weekAgo.getDate() - 7);
+      return new Date(client.created_at) >= weekAgo;
+    }).length, icon: <FaCalendarWeek /> },
   ];
 
-  // Transform API data for the table and remove duplicates
-  const tableData = clients
-    .filter((client, index, self) => 
-      index === self.findIndex(c => c.id === client.id)
-    )
-    .map(client => ({
-      id: client.id,
-      name: client.name,
-      contact: client.email,
-      pending: '0', // TODO: Get actual pending cases count
-      onlineId: client.id.toString(),
-      services: client.enabled_services ? client.enabled_services.length : 0,
-      enabled_services: client.enabled_services || [],
-      company_link: client.company_link,
-      created_at: client.created_at,
-      updated_at: client.updated_at
-    }));
+  // Use API data directly without transformation
+  const tableData = clients;
 
   const columns = [
     { 
@@ -139,50 +128,50 @@ const Client = () => {
       ) 
     },
     { 
-      field: 'contact', 
+      field: 'email', 
       headerName: 'Email', 
       flex: 1, 
       minWidth: 150,
       headerAlign: 'left',
       renderCell: (params) => (
         <div className="datatable-cell-content">
-          {params.row.contact}
+          {params.row.email}
         </div>
       ) 
     },
     { 
-      field: 'pending', 
+      field: 'pending_count', 
       headerName: 'Pending Cases', 
       flex: 1, 
       minWidth: 120,
       headerAlign: 'left',
       renderCell: (params) => (
         <div className="datatable-cell-content">
-          {params.row.pending}
+          {params.row.pending_count}
         </div>
       ) 
     },
     { 
-      field: 'onlineId', 
+      field: 'id', 
       headerName: 'Client ID', 
       flex: 1, 
       minWidth: 100,
       headerAlign: 'left',
       renderCell: (params) => (
         <div className="datatable-cell-content">
-          {params.row.onlineId}
+          {params.row.id}
         </div>
       ) 
     },
     { 
-      field: 'services', 
+      field: 'enabled_services', 
       headerName: 'Services', 
       flex: 1, 
       minWidth: 80,
       headerAlign: 'left',
       renderCell: (params) => (
         <div className="datatable-cell-content">
-          {params.row.services}
+          {params.row.enabled_services ? params.row.enabled_services.length : 0}
         </div>
       ) 
     },

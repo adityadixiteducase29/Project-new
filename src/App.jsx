@@ -5,11 +5,12 @@ import { store } from './store/store'
 import { useAppSelector, useAppDispatch } from './store/hooks'
 import { selectIsAuthenticated, selectUser, selectToken, setCredentials, clearCredentials } from './store/slices/authSlice'
 import { useApiToken } from './hooks/useApiToken'
+import { useRoutePersistence } from './hooks/useRoutePersistence'
 import AuthStorage from './utils/storage'
 import DashboardLayout from './components/DashboardLayout'
 import Dashboard from './pages/Dashboard/Dashboard'
 import Client from './pages/Client/Client'
-import Employees from './pages/Employees'
+import Employees from './pages/Employee/Employees'
 import Application from './pages/Application'
 import Help from './pages/Help'
 import NotFound from './pages/NotFound'
@@ -26,6 +27,7 @@ import VerifierHelp from './pages/VerifierHelp'
 const ProtectedRoute = ({ children, requiredRole = null }) => {
   const dispatch = useAppDispatch();
   const { user, isAuthenticated, loading, token } = useAppSelector(state => state.auth);
+  const { restoreRoute } = useRoutePersistence();
 
   // Sync API service token with Redux
   useApiToken();
@@ -53,6 +55,16 @@ const ProtectedRoute = ({ children, requiredRole = null }) => {
       console.log('Token available, user data should be restored from localStorage');
     }
   }, [token, user, loading]);
+
+  // Restore route after authentication is restored
+  useEffect(() => {
+    if (isAuthenticated && user && !loading) {
+      // Small delay to ensure everything is loaded
+      setTimeout(() => {
+        restoreRoute();
+      }, 100);
+    }
+  }, [isAuthenticated, user, loading, restoreRoute]);
 
   if (loading) {
     return (
@@ -96,7 +108,11 @@ const AppRoutes = () => {
     <Routes>
       {/* Public routes */}
       <Route path="/login" element={
-        isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />
+        isAuthenticated ? (
+          <Navigate to={localStorage.getItem('lastRoute') || '/dashboard'} replace />
+        ) : (
+          <Login />
+        )
       } />
       
       {/* Public UserForm route - accessible without authentication */}
@@ -104,7 +120,11 @@ const AppRoutes = () => {
       
       {/* Root redirect */}
       <Route path="/" element={
-        isAuthenticated ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />
+        isAuthenticated ? (
+          <Navigate to={localStorage.getItem('lastRoute') || '/dashboard'} replace />
+        ) : (
+          <Navigate to="/login" replace />
+        )
       } />
 
       {/* Admin Routes */}

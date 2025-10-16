@@ -65,8 +65,8 @@ const VerifierHelp = () => {
     <div className="space-y-8">
       {/* Header */}
       <div className="flex flex-col gap-2">
-        <h1 className="dashboard-title">
-          Verifier Help & Support
+        <h1 className="dashboard-title" style={{color:"#4F378B"}}>
+          Help & Support
         </h1>
         <p className="text-gray-600">Find answers to common questions and get support for verification tasks</p>
       </div>

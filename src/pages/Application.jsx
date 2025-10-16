@@ -177,7 +177,7 @@ const Application = () => {
       </style>
       {/* Welcome Header */}
       <div className="flex flex-col gap-2">
-        <h1 className="dashboard-title">
+        <h1 className="dashboard-title" style={{color:"#4F378B"}}>
           Applications
         </h1>
       </div>

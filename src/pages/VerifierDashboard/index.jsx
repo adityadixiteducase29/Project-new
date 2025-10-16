@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Typography,
   TextField,
@@ -12,65 +12,71 @@ import { Row, Col, Input, Label } from 'reactstrap'
 import { FaClipboardCheck, FaHourglassHalf, FaCheckCircle, FaTimesCircle } from 'react-icons/fa'
 import './index.css'
 import Datatable from "@/components/Datatable"
+import apiService from "../../services/api"
+import { toast } from 'react-toastify'
 
 const VerifierDashboard = () => {
-  const cards = [
-    { label: 'Total Applications', value: 156, icon: <FaClipboardCheck /> },
-    { label: 'Pending Review', value: 42, icon: <FaHourglassHalf /> },
-    { label: 'Approved Today', value: 18, icon: <FaCheckCircle /> },
-    { label: 'Rejected Today', value: 5, icon: <FaTimesCircle /> },
-  ];
+  const [cards, setCards] = useState([
+    { label: 'Total Applications', value: 0, icon: <FaClipboardCheck /> },
+    { label: 'Pending Review', value: 0, icon: <FaHourglassHalf /> },
+    { label: 'Approved Today', value: 0, icon: <FaCheckCircle /> },
+    { label: 'Rejected Today', value: 0, icon: <FaTimesCircle /> },
+  ]);
 
-  // Sample data for verifier dashboard
-  const initialTableData = [
-    { 
-      id: 1, 
-      applicantName: 'John Doe', 
-      documentType: 'Aadhar Card', 
-      submittedDate: 'Jun 10, 25, 06:45 PM', 
-      priority: 'High',
-      status: 'Pending Review'
-    },
-    { 
-      id: 2, 
-      applicantName: 'Jane Smith', 
-      documentType: 'PAN Card', 
-      submittedDate: 'Jun 10, 25, 05:30 PM', 
-      priority: 'Medium',
-      status: 'Pending Review'
-    },
-    { 
-      id: 3, 
-      applicantName: 'Mike Johnson', 
-      documentType: 'Passport', 
-      submittedDate: 'Jun 10, 25, 04:15 PM', 
-      priority: 'Low',
-      status: 'Pending Review'
-    },
-    { 
-      id: 4, 
-      applicantName: 'Sarah Wilson', 
-      documentType: 'Driving License', 
-      submittedDate: 'Jun 10, 25, 03:20 PM', 
-      priority: 'High',
-      status: 'Pending Review'
-    },
-    { 
-      id: 5, 
-      applicantName: 'David Brown', 
-      documentType: 'Voter ID', 
-      submittedDate: 'Jun 10, 25, 02:45 PM', 
-      priority: 'Medium',
-      status: 'Pending Review'
+  const [tabledata, setTabledata] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // Fetch verifier data
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('auth_token');
+      if (!token) return;
+
+      apiService.setToken(token);
+      
+      // Fetch verifier applications and stats in parallel
+      const [applicationsResponse, statsResponse] = await Promise.all([
+        apiService.getVerifierApplications(),
+        apiService.getVerifierStats()
+      ]);
+
+      if (applicationsResponse.success) {
+        setTabledata(applicationsResponse.data);
+      } else {
+        console.error('Failed to fetch applications:', applicationsResponse.message);
+        toast.error('Failed to fetch applications');
+      }
+
+      if (statsResponse.success) {
+        const stats = statsResponse.data;
+        setCards([
+          { label: 'Total Applications', value: stats.total_applications, icon: <FaClipboardCheck /> },
+          { label: 'Pending Review', value: stats.pending_review, icon: <FaHourglassHalf /> },
+          { label: 'Approved Today', value: stats.approved_today, icon: <FaCheckCircle /> },
+          { label: 'Rejected Today', value: stats.rejected_today, icon: <FaTimesCircle /> },
+        ]);
+      } else {
+        console.error('Failed to fetch stats:', statsResponse.message);
+        toast.error('Failed to fetch dashboard stats');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      toast.error('Error fetching data');
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
-  const [tabledata, setTabledata] = useState(initialTableData);
+  // Fetch data on component mount
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const columns = [
     { 
       field: 'applicantName', 
-      headerName: 'Applicant Name', 
+      headerName: 'Name', 
       flex: 1, 
       minWidth: 150,
       headerAlign: 'left',
@@ -81,20 +87,44 @@ const VerifierDashboard = () => {
       ) 
     },
     { 
-      field: 'documentType', 
-      headerName: 'Document Type', 
+      field: 'applicantPhone', 
+      headerName: 'Contact No', 
       flex: 1, 
       minWidth: 120,
       headerAlign: 'left',
       renderCell: (data) => (
         <div className="datatable-cell-content">
-          {data.row.documentType}
+          {data.row.applicantPhone || 'N/A'}
+        </div>
+      ) 
+    },
+    { 
+      field: 'companyName', 
+      headerName: 'Client', 
+      flex: 1, 
+      minWidth: 120,
+      headerAlign: 'left',
+      renderCell: (data) => (
+        <div className="datatable-cell-content">
+          {data.row.companyName}
+        </div>
+      ) 
+    },
+    { 
+      field: 'id', 
+      headerName: 'Application ID', 
+      flex: 1, 
+      minWidth: 120,
+      headerAlign: 'left',
+      renderCell: (data) => (
+        <div className="datatable-cell-content">
+          {data.row.id}
         </div>
       ) 
     },
     { 
       field: 'submittedDate', 
-      headerName: 'Submitted Date', 
+      headerName: 'Applied Date', 
       flex: 1, 
       minWidth: 160,
       headerAlign: 'left',
@@ -105,35 +135,6 @@ const VerifierDashboard = () => {
       ) 
     },
     { 
-      field: 'priority', 
-      headerName: 'Priority', 
-      flex: 1, 
-      minWidth: 100,
-      headerAlign: 'left',
-      renderCell: (data) => {
-        const getPriorityColor = (priority) => {
-          switch (priority.toLowerCase()) {
-            case 'high':
-              return 'red';
-            case 'medium':
-              return 'orange';
-            case 'low':
-              return 'green';
-            default:
-              return 'gray';
-          }
-        };
-        
-        const priorityColor = getPriorityColor(data.row.priority);
-        
-        return (
-          <div className={`datatable-priority datatable-priority-${priorityColor}`}>
-            {data.row.priority}
-          </div>
-        );
-      } 
-    },
-    { 
       field: 'status', 
       headerName: 'Status', 
       flex: 1, 
@@ -141,7 +142,21 @@ const VerifierDashboard = () => {
       headerAlign: 'left',
       renderCell: (data) => (
         <div className="datatable-cell-content">
-          {data.row.status}
+          <span style={{
+            padding: '4px 6px',
+            borderRadius: '4px',
+            fontSize: '11px',
+            fontWeight: '500',
+            backgroundColor: data.row.status === 'pending' ? '#fff3cd' : '#d4edda',
+            color: data.row.status === 'pending' ? '#856404' : '#155724',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            maxWidth: '100%',
+            display: 'inline-block'
+          }}>
+            {data.row.status === 'pending' ? 'Pending' : data.row.status}
+          </span>
         </div>
       ) 
     }
@@ -178,11 +193,17 @@ const VerifierDashboard = () => {
       </div>
       
       <div>
-        <Datatable
-          tabledata={tabledata}
-          columns={columns}
-          pageSize={5}
-        />
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '40px' }}>
+            <div>Loading applications...</div>
+          </div>
+        ) : (
+          <Datatable
+            tabledata={tabledata}
+            columns={columns}
+            pageSize={5}
+          />
+        )}
       </div>
     </div>
   );

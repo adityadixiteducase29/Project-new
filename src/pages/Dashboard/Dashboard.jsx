@@ -11,17 +11,22 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { useAppSelector } from '@/store/hooks';
 import apiService from '@/services/api';
 import { toast } from 'react-toastify';
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
   const [clients, setClients] = useState([]);
+  const [dashboardStats, setDashboardStats] = useState({
+    clients: 0,
+    total_verifications: 0,
+    pending: 0,
+    this_week: 0
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [linkCopiedStates, setLinkCopiedStates] = useState({});
-
-  const auth = useAppSelector(state => state.auth);
-
-  // Fetch clients from API
-  const fetchClients = async () => {
+  const { token } = useSelector((state) => state.auth);
+  // Fetch clients and dashboard stats from API
+  const fetchData = async () => {
     try {
       setLoading(true);
       setError('');
@@ -35,24 +40,31 @@ const Dashboard = () => {
       // Set token in API service
       apiService.setToken(token);
 
-      // Fetch companies
-      const result = await apiService.request('/companies', {
-        method: 'GET'
-      });
+      // Fetch companies and dashboard stats in parallel
+      const [companiesResult, statsResult] = await Promise.all([
+        apiService.request('/companies', { method: 'GET' }),
+        apiService.getDashboardStats()
+      ]);
 
-      setClients(result.data || []);
+      setClients(companiesResult.data || []);
+      setDashboardStats(statsResult.data || {
+        clients: 0,
+        total_verifications: 0,
+        pending: 0,
+        this_week: 0
+      });
     } catch (error) {
-      console.error('Error fetching clients:', error);
+      console.error('Error fetching data:', error);
       setError(error.message);
-      toast.error('Failed to fetch clients');
+      toast.error('Failed to fetch data');
     } finally {
       setLoading(false);
     }
   };
 
-  // Load clients on component mount
+  // Load data on component mount
   useEffect(() => {
-    fetchClients();
+    fetchData();
   }, []);
 
   const handleEditClick = (row) => {
@@ -89,29 +101,14 @@ const Dashboard = () => {
   };
 
   const cards = [
-    { label: 'Clients', value: clients.length, icon: <FaUsers /> },
-    { label: 'Total Verifications', value: 120, icon: <FaFingerprint /> },
-    { label: 'Pending', value: 96, icon: <FaHourglassHalf /> },
-    { label: 'This week', value: 16, icon: <FaCalendarWeek /> },
+    { label: 'Clients', value: dashboardStats.clients, icon: <FaUsers /> },
+    { label: 'Total Verifications', value: dashboardStats.total_verifications, icon: <FaFingerprint /> },
+    { label: 'Pending', value: dashboardStats.pending, icon: <FaHourglassHalf /> },
+    { label: 'This week', value: dashboardStats.this_week, icon: <FaCalendarWeek /> },
   ];
 
-  // Transform API data for the table and remove duplicates
-  const tableData = clients
-    .filter((client, index, self) => 
-      index === self.findIndex(c => c.id === client.id)
-    )
-    .map(client => ({
-      id: client.id,
-      name: client.name,
-      contact: client.email,
-      pending: '0', // TODO: Get actual pending cases count
-      onlineId: client.id.toString(),
-      services: client.enabled_services ? client.enabled_services.length : 0,
-      enabled_services: client.enabled_services || [],
-      company_link: client.company_link,
-      created_at: client.created_at,
-      updated_at: client.updated_at
-    }));
+  // Use API data directly without transformation
+  const tableData = clients;
 
 
 
@@ -129,50 +126,50 @@ const Dashboard = () => {
       ) 
     },
     { 
-      field: 'contact', 
+      field: 'email', 
       headerName: 'Email', 
       flex: 1, 
       minWidth: 150,
       headerAlign: 'left',
       renderCell: (params) => (
         <div className="datatable-cell-content">
-          {params.row.contact}
+          {params.row.email}
         </div>
       ) 
     },
     { 
-      field: 'pending', 
+      field: 'pending_count', 
       headerName: 'Pending Cases', 
       flex: 1, 
       minWidth: 120,
       headerAlign: 'left',
       renderCell: (params) => (
         <div className="datatable-cell-content">
-          {params.row.pending}
+          {params.row.pending_count}
         </div>
       ) 
     },
     { 
-      field: 'onlineId', 
+      field: 'id', 
       headerName: 'Client ID', 
       flex: 1, 
       minWidth: 100,
       headerAlign: 'left',
       renderCell: (params) => (
         <div className="datatable-cell-content">
-          {params.row.onlineId}
+          {params.row.id}
         </div>
       ) 
     },
     { 
-      field: 'services', 
+      field: 'enabled_services', 
       headerName: 'Services', 
       flex: 1, 
       minWidth: 80,
       headerAlign: 'left',
       renderCell: (params) => (
         <div className="datatable-cell-content">
-          {params.row.services}
+          {params.row.enabled_services ? params.row.enabled_services.length : 0}
         </div>
       ) 
     },
@@ -235,7 +232,7 @@ const Dashboard = () => {
         ) : error ? (
           <div className="flex justify-center items-center h-64">
             <div className="text-lg text-red-600">{error}</div>
-            <button onClick={fetchClients} className="mt-3 px-4 py-2 bg-blue-500 text-white rounded">
+            <button onClick={fetchData} className="mt-3 px-4 py-2 bg-blue-500 text-white rounded">
               Retry
             </button>
           </div>

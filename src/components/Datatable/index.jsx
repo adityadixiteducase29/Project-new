@@ -29,26 +29,32 @@ function CustomPagination() {
 
 
 
-const Datatable = ({ tabledata, columns, pageSize = 8, ...rest }) => (
-  <div className="datatable-container">
-    <DataGrid
-      className="datatable-grid"
-      rows={tabledata}
-      columns={columns}
-      pageSize={pageSize}
-      pagination
-      slots={{ pagination: CustomPagination }}
-      disableColumnMenu
-      disableColumnFilter
-      disableColumnSelector
-      disableColumnResize
-      disableColumnReorder
-      disableColumnSorting
-      disableRowSelectionOnClick
-      hideFooterSelectedRowCount
-      {...rest}
-    />
-  </div>
-);
+const Datatable = ({ tabledata, columns, pageSize = 8, ...rest }) => {
+  // Use autoHeight when there are fewer rows than pageSize
+  const shouldUseAutoHeight = tabledata.length <= pageSize;
+  
+  return (
+    <div className="datatable-container">
+      <DataGrid
+        className="datatable-grid"
+        rows={tabledata}
+        columns={columns}
+        pageSize={pageSize}
+        pagination
+        autoHeight={shouldUseAutoHeight}
+        slots={{ pagination: CustomPagination }}
+        disableColumnMenu
+        disableColumnFilter
+        disableColumnSelector
+        disableColumnResize
+        disableColumnReorder
+        disableColumnSorting
+        disableRowSelectionOnClick
+        hideFooterSelectedRowCount
+        {...rest}
+      />
+    </div>
+  );
+};
 
 export default Datatable;

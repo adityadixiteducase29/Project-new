@@ -235,6 +235,18 @@ class ApiService {
         }
     }
 
+    async getVerifierStats() {
+        try {
+            return await this.request('/users/verifier/stats');
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || 'Failed to fetch verifier stats',
+                error: error
+            };
+        }
+    }
+
     async getVerifierCompanies() {
         try {
             return await this.request('/users/verifier/companies');
@@ -272,6 +284,32 @@ class ApiService {
         }
     }
 
+    // Dashboard Methods
+    async getDashboardStats() {
+        try {
+            return await this.request('/companies/stats/dashboard');
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || 'Failed to fetch dashboard stats',
+                error: error
+            };
+        }
+    }
+
+    // Company Dropdown Methods
+    async getCompaniesDropdown() {
+        try {
+            return await this.request('/companies/dropdown');
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || 'Failed to fetch companies dropdown',
+                error: error
+            };
+        }
+    }
+
     // Applications Methods
     async getAllApplications(filters = {}) {
         try {
@@ -300,6 +338,87 @@ class ApiService {
             return {
                 success: false,
                 message: error.message || 'Failed to fetch application',
+                error: error
+            };
+        }
+    }
+
+    // Employee/Verifier Methods
+    async getAllEmployees() {
+        try {
+            return await this.request('/employees');
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || 'Failed to fetch employees',
+                error: error
+            };
+        }
+    }
+
+    async createEmployee(employeeData) {
+        try {
+            return await this.request('/employees', {
+                method: 'POST',
+                body: JSON.stringify(employeeData)
+            });
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || 'Failed to create employee',
+                error: error
+            };
+        }
+    }
+
+    async getEmployeeById(id) {
+        try {
+            return await this.request(`/employees/${id}`);
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || 'Failed to fetch employee',
+                error: error
+            };
+        }
+    }
+
+    async updateEmployee(id, employeeData) {
+        try {
+            return await this.request(`/employees/${id}`, {
+                method: 'PUT',
+                body: JSON.stringify(employeeData)
+            });
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || 'Failed to update employee',
+                error: error
+            };
+        }
+    }
+
+    async deleteEmployee(id) {
+        try {
+            return await this.request(`/employees/${id}`, {
+                method: 'DELETE'
+            });
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || 'Failed to delete employee',
+                error: error
+            };
+        }
+    }
+
+    async getEmployeeStats() {
+        try {
+            return await this.request('/employees/stats/dashboard');
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || 'Failed to fetch employee stats',
                 error: error
             };
         }

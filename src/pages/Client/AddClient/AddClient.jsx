@@ -71,7 +71,7 @@ const AddClient = ({ modal, toggle, onClientAdded }) => {
 
       // Success - close modal and reset form
       console.log('Client created successfully:', result.data);
-      
+
       // Reset form
       setFormData({
         clientName: '',
@@ -112,7 +112,7 @@ const AddClient = ({ modal, toggle, onClientAdded }) => {
         <ModalHeader toggle={toggle} className="add-client-header">
           <h2 className="modal-title">Add Client</h2>
         </ModalHeader>
-        
+
         <ModalBody className="add-client-body">
           {/* Error Display */}
           {error && (
@@ -120,12 +120,10 @@ const AddClient = ({ modal, toggle, onClientAdded }) => {
               {error}
             </div>
           )}
-
-          {/* Form Fields */}
-          <div className="form-section">
-            <Row className="mb-3">
-              <Col md={12} className='mb-3'>
-                <TextField
+          <Row className='mb-4'>
+            <Row className='mb-3'>
+              <Col md={6}>
+              <TextField
                   fullWidth
                   name="clientName"
                   value={formData.clientName}
@@ -138,8 +136,8 @@ const AddClient = ({ modal, toggle, onClientAdded }) => {
                   className="form-field"
                 />
               </Col>
-              <Col md={12} className='mb-3'>
-                <TextField
+              <Col md={6}>
+              <TextField
                   fullWidth
                   name="clientEmail"
                   value={formData.clientEmail}
@@ -152,8 +150,10 @@ const AddClient = ({ modal, toggle, onClientAdded }) => {
                   className="form-field"
                 />
               </Col>
-              <Col md={12} className='mb-3'>
-                <TextField
+            </Row>
+            <Row>
+              <Col md={6}>
+              <TextField
                   fullWidth
                   name="password"
                   value={formData.password}
@@ -167,10 +167,7 @@ const AddClient = ({ modal, toggle, onClientAdded }) => {
                 />
               </Col>
             </Row>
-            <Row>
-            </Row>
-          </div>
-
+          </Row>
           {/* Divider */}
           <div className="divider"></div>
 
@@ -192,7 +189,7 @@ const AddClient = ({ modal, toggle, onClientAdded }) => {
                   className="service-label-container"
                 />
               </div>
-              
+
               <div className="service-item">
                 <FormControlLabel
                   control={
@@ -207,7 +204,7 @@ const AddClient = ({ modal, toggle, onClientAdded }) => {
                   className="service-label-container"
                 />
               </div>
-              
+
               <div className="service-item">
                 <FormControlLabel
                   control={
@@ -222,7 +219,7 @@ const AddClient = ({ modal, toggle, onClientAdded }) => {
                   className="service-label-container"
                 />
               </div>
-              
+
               <div className="service-item">
                 <FormControlLabel
                   control={
@@ -237,7 +234,7 @@ const AddClient = ({ modal, toggle, onClientAdded }) => {
                   className="service-label-container"
                 />
               </div>
-              
+
               <div className="service-item">
                 <FormControlLabel
                   control={
@@ -252,7 +249,7 @@ const AddClient = ({ modal, toggle, onClientAdded }) => {
                   className="service-label-container"
                 />
               </div>
-              
+
               <div className="service-item">
                 <FormControlLabel
                   control={
@@ -267,7 +264,7 @@ const AddClient = ({ modal, toggle, onClientAdded }) => {
                   className="service-label-container"
                 />
               </div>
-              
+
               <div className="service-item">
                 <FormControlLabel
                   control={
@@ -285,18 +282,18 @@ const AddClient = ({ modal, toggle, onClientAdded }) => {
             </div>
           </div>
         </ModalBody>
-        
+
         <ModalFooter className="add-client-footer">
-          <Button 
-            color="link" 
+          <Button
+            color="link"
             onClick={toggle}
             className="cancel-button"
             disabled={loading}
           >
             Cancel
           </Button>
-          <Button 
-            color="primary" 
+          <Button
+            color="primary"
             onClick={handleSave}
             className="save-button"
             disabled={!formData.clientName || !formData.clientEmail || !formData.password || selectedCount === 0 || loading}
