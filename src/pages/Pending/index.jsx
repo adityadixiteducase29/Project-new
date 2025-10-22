@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Typography,
   TextField,
@@ -9,51 +9,105 @@ import {
   Divider,
   Button
 } from '@mui/material'
+import { Button as ButtonStrap, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Row, Col } from 'reactstrap'
 import { Search, FilterList, HourglassEmpty } from '@mui/icons-material'
 import './index.css'
 import Datatable from "@/components/Datatable"
+import apiService from "../../services/api"
+import { toast } from 'react-toastify'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const Pending = () => {
-  // Sample data for pending applications
-  const initialTableData = [
-    { 
-      id: 1, 
-      applicationId: 'APP001', 
-      applicantName: 'John Doe', 
-      documentType: 'Aadhar Card', 
-      submittedDate: 'Jun 10, 25, 06:45 PM', 
-      priority: 'High',
-      waitTime: '2 hours',
-      assignedTo: 'Sarah Verifier'
-    },
-    { 
-      id: 2, 
-      applicationId: 'APP002', 
-      applicantName: 'Jane Smith', 
-      documentType: 'PAN Card', 
-      submittedDate: 'Jun 10, 25, 05:30 PM', 
-      priority: 'Medium',
-      waitTime: '3 hours',
-      assignedTo: 'Unassigned'
-    },
-    { 
-      id: 3, 
-      applicationId: 'APP003', 
-      applicantName: 'Mike Johnson', 
-      documentType: 'Passport', 
-      submittedDate: 'Jun 10, 25, 04:15 PM', 
-      priority: 'Low',
-      waitTime: '4 hours',
-      assignedTo: 'Sarah Verifier'
-    }
-  ];
-
-  const [tabledata, setTabledata] = useState(initialTableData);
+  // State for pending applications
+  const [tabledata, setTabledata] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [modal, setModal] = useState(false);
+  const [selectedApplicationId, setSelectedApplicationId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+
+  const toggle = () => setModal(!modal);
+  
+  // Get current user from Redux store
+  const user = useSelector(state => state.auth.user);
+
+  // Fetch pending applications data
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('auth_token');
+      if (!token) return;
+
+      apiService.setToken(token);
+      
+      // Fetch pending applications
+      const pendingResponse = await apiService.getVerifierPendingApplications();
+
+      if (pendingResponse.success) {
+        setTabledata(pendingResponse.data);
+      } else {
+        console.error('Failed to fetch pending applications:', pendingResponse.message);
+        toast.error('Failed to fetch pending applications');
+      }
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      toast.error('Error fetching data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch data on component mount
+  useEffect(() => {
+    fetchData();
+    setCurrentUser(user);
+  }, [user]);
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
+  };
+
+  // Handle Review button click
+  const handleReviewClick = async (applicationId) => {
+    try {
+      // First, check if the application is already assigned to this verifier
+      const application = tabledata.find(app => app.id === applicationId);
+      const isAssigned = application?.is_assigned === 'yes';
+      const isAssignedToCurrentUser = application?.assigned_verifier_id === currentUser?.id;
+
+      // If not assigned, auto-assign it to the current verifier
+      if (!isAssigned) {
+        const assignResponse = await apiService.assignApplicationToVerifier(applicationId);
+        
+        if (!assignResponse.success) {
+          toast.error(assignResponse.message || 'Failed to assign application');
+          return;
+        }
+
+        toast.success('Application assigned to you successfully');
+        // Refresh the data to update the assignment status
+        await fetchData();
+      }
+
+      // Store the application ID and open modal
+      setSelectedApplicationId(applicationId);
+      toggle();
+      
+    } catch (error) {
+      console.error('Error handling review click:', error);
+      toast.error('Error processing review request');
+    }
+  };
+
+  // Handle Start Review button click
+  const handleStartReview = () => {
+    if (selectedApplicationId) {
+      navigate(`/review-application/${selectedApplicationId}`);
+    }
   };
 
   const columns = [
@@ -65,7 +119,7 @@ const Pending = () => {
       headerAlign: 'left',
       renderCell: (data) => (
         <div className="datatable-cell-content">
-          {data.row.applicationId}
+          {data.row.id}
         </div>
       ) 
     },
@@ -135,14 +189,14 @@ const Pending = () => {
       } 
     },
     { 
-      field: 'waitTime', 
-      headerName: 'Wait Time', 
+      field: 'status', 
+      headerName: 'Status', 
       flex: 1, 
-      minWidth: 100,
+      minWidth: 120,
       headerAlign: 'left',
       renderCell: (data) => (
         <div className="datatable-cell-content">
-          {data.row.waitTime}
+          {data.row.status}
         </div>
       ) 
     },
@@ -154,7 +208,7 @@ const Pending = () => {
       headerAlign: 'left',
       renderCell: (data) => (
         <div className="datatable-cell-content">
-          {data.row.assignedTo}
+          {data.row.assigned_verifier_name || 'Not Assigned'}
         </div>
       ) 
     },
@@ -165,18 +219,30 @@ const Pending = () => {
       minWidth: 120,
       headerAlign: 'left',
       sortable: false,
-      renderCell: (data) => (
-        <div className="datatable-actions">
-          <Button 
-            variant="contained" 
-            size="small"
-            className="action-button"
-            startIcon={<HourglassEmpty />}
-          >
-            Start Review
-          </Button>
-        </div>
-      ) 
+      renderCell: (data) => {
+        const application = data.row;
+        const isAssigned = application.is_assigned === 'yes';
+        const isAssignedToCurrentUser = application.assigned_verifier_id === currentUser?.id;
+        
+        // Button should be disabled if:
+        // 1. Application is assigned to a different verifier
+        const shouldDisable = isAssigned && !isAssignedToCurrentUser;
+        
+        return (
+          <div className="datatable-actions">
+            <Button 
+              variant="contained" 
+              size="small"
+              className="action-button"
+              startIcon={<HourglassEmpty />}
+              disabled={shouldDisable}
+              onClick={() => handleReviewClick(application.id)}
+            >
+              {shouldDisable ? 'Assigned' : 'Start Review'}
+            </Button>
+          </div>
+        );
+      } 
     }
   ];
 
@@ -229,6 +295,18 @@ const Pending = () => {
           pageSize={10}
         />
       </div>
+      
+      <Modal isOpen={modal} toggle={toggle}>
+        <ModalHeader toggle={toggle}>Application Review</ModalHeader>
+        <ModalBody>
+          This application is assigned to you. Please start the review process.
+        </ModalBody>
+        <ModalFooter>
+          <ButtonStrap color="primary" onClick={handleStartReview}>
+            Start Review
+          </ButtonStrap>{' '}
+        </ModalFooter>
+      </Modal>
     </div>
   );
 };

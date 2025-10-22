@@ -81,17 +81,17 @@ const AppSidebar = ({ userType, user, onLogout }) => {
       path: '/company-dashboard',
       label: 'Dashboard',
       icon: <DashboardIcon />
-    },
-    {
-      path: '/company-applications',
-      label: 'Applications',
-      icon: <AssignmentIcon />
-    },
-    {
-      path: '/company-stats',
-      label: 'Statistics',
-      icon: <CheckCircleIcon />
     }
+    // {
+    //   path: '/company-applications',
+    //   label: 'Applications',
+    //   icon: <AssignmentIcon />
+    // },
+    // {
+    //   path: '/company-stats',
+    //   label: 'Statistics',
+    //   icon: <CheckCircleIcon />
+    // }
   ];
 
   // Select navigation items based on user type
@@ -132,12 +132,12 @@ const AppSidebar = ({ userType, user, onLogout }) => {
 
   return (
     <aside className={`app-sidebar ${isCollapsed ? 'collapsed' : ''}`}>
-      <div className="sidebar-header">
-        <div className="sidebar-logo">
+      <div className={isCollapsed ? 'sidebar-header-collapsed' : 'sidebar-header'}>
+        <div className={isCollapsed ? 'sidebar-logo-collapsed' : 'sidebar-logo'}>
           <img src="/Logo.svg" alt="Logo" />
         </div>
         <button
-          className="sidebar-toggle"
+          className={`sidebar-toggle ${isCollapsed ? 'sidebar-toggle-collapsed' : ''}`}
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
           {isCollapsed ? '→' : '←'}

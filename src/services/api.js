@@ -235,6 +235,30 @@ class ApiService {
         }
     }
 
+    async getVerifierPendingApplications() {
+        try {
+            return await this.request('/users/verifier/applications/pending');
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || 'Failed to fetch pending applications',
+                error: error
+            };
+        }
+    }
+
+    async getVerifierApprovedApplications() {
+        try {
+            return await this.request('/users/verifier/applications/approved');
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || 'Failed to fetch approved applications',
+                error: error
+            };
+        }
+    }
+
     async getVerifierStats() {
         try {
             return await this.request('/users/verifier/stats');
@@ -254,6 +278,34 @@ class ApiService {
             return {
                 success: false,
                 message: error.message || 'Failed to fetch verifier companies',
+                error: error
+            };
+        }
+    }
+
+    // Auto-assign application to current verifier
+    async assignApplicationToVerifier(applicationId) {
+        try {
+            return await this.request(`/applications/${applicationId}/auto-assign`, {
+                method: 'POST'
+            });
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || 'Failed to assign application to verifier',
+                error: error
+            };
+        }
+    }
+
+    // Get application details by ID
+    async getApplicationDetails(applicationId) {
+        try {
+            return await this.request(`/applications/${applicationId}`);
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || 'Failed to fetch application details',
                 error: error
             };
         }
@@ -310,6 +362,19 @@ class ApiService {
         }
     }
 
+    // Company Employee Methods
+    async getCompanyEmployees() {
+        try {
+            return await this.request('/companies/employees');
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || 'Failed to fetch company employees',
+                error: error
+            };
+        }
+    }
+
     // Applications Methods
     async getAllApplications(filters = {}) {
         try {
@@ -338,6 +403,20 @@ class ApiService {
             return {
                 success: false,
                 message: error.message || 'Failed to fetch application',
+                error: error
+            };
+        }
+    }
+
+    async deleteApplication(id) {
+        try {
+            return await this.request(`/applications/${id}`, {
+                method: 'DELETE'
+            });
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || 'Failed to delete application',
                 error: error
             };
         }
@@ -412,6 +491,20 @@ class ApiService {
         }
     }
 
+    async deleteClient(id) {
+        try {
+            return await this.request(`/companies/${id}`, {
+                method: 'DELETE'
+            });
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || 'Failed to delete client',
+                error: error
+            };
+        }
+    }
+
     async getEmployeeStats() {
         try {
             return await this.request('/employees/stats/dashboard');
@@ -419,6 +512,49 @@ class ApiService {
             return {
                 success: false,
                 message: error.message || 'Failed to fetch employee stats',
+                error: error
+            };
+        }
+    }
+
+    // Review API Methods
+    async submitReview(applicationId, reviewData) {
+        try {
+            return await this.request(`/reviews/${applicationId}/review`, {
+                method: 'POST',
+                body: JSON.stringify(reviewData)
+            });
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || 'Failed to submit review',
+                error: error
+            };
+        }
+    }
+
+    async getReview(applicationId) {
+        try {
+            return await this.request(`/reviews/${applicationId}/review`);
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || 'Failed to fetch review',
+                error: error
+            };
+        }
+    }
+
+    async finalizeReview(applicationId, finalData) {
+        try {
+            return await this.request(`/reviews/${applicationId}/finalize-review`, {
+                method: 'POST',
+                body: JSON.stringify(finalData)
+            });
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || 'Failed to finalize review',
                 error: error
             };
         }

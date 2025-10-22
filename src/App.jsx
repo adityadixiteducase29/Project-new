@@ -19,9 +19,11 @@ import UserForm from './pages/UserForm'
 // Verifier components
 import VerifierDashboard from './pages/VerifierDashboard'
 import VerifierApplications from './pages/VerifierApplications'
+import ReviewApplication from './pages/ReviewApplication'
 import Pending from './pages/Pending'
 import Approved from './pages/Approved'
 import VerifierHelp from './pages/VerifierHelp'
+import ClientDashboard from './pages/ClientDashboard'
 
 // Protected Route Component
 const ProtectedRoute = ({ children, requiredRole = null }) => {
@@ -209,14 +211,18 @@ const AppRoutes = () => {
         </ProtectedRoute>
       } />
 
-      {/* Company Routes (Future) */}
+      {/* Verify Application Route - Full Page (No DashboardLayout) */}
+      <Route path="/review-application/:id" element={
+        <ProtectedRoute requiredRole="verifier">
+          <ReviewApplication />
+        </ProtectedRoute>
+      } />
+
+      {/* Company Routes */}
       <Route path="/company-dashboard" element={
         <ProtectedRoute requiredRole="company">
           <DashboardLayout>
-            <div className="p-4">
-              <h2>Company Dashboard</h2>
-              <p>Company dashboard coming soon...</p>
-            </div>
+            <ClientDashboard />
           </DashboardLayout>
         </ProtectedRoute>
       } />

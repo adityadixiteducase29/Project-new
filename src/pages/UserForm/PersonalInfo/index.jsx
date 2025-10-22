@@ -59,7 +59,7 @@ const PersonalInformation = ({ companyId, formData, updateFormData }) => {
               <Col xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="First Name *"
+                  label="First Name"
                   placeholder="Enter your first name"
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
@@ -72,7 +72,7 @@ const PersonalInformation = ({ companyId, formData, updateFormData }) => {
               <Col xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="Last Name *"
+                  label="Last Name"
                   placeholder="Enter your last name"
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
@@ -88,7 +88,7 @@ const PersonalInformation = ({ companyId, formData, updateFormData }) => {
               <Col xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="Email ID *"
+                  label="Email ID"
                   type="email"
                   placeholder="Enter your email address"
                   variant="outlined"

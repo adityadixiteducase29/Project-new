@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Typography,
   TextField,
@@ -9,48 +9,79 @@ import {
   Divider,
   Button
 } from '@mui/material'
+import { Button as ButtonStrap, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Row, Col } from 'reactstrap'
 import { Search, FilterList, CheckCircle } from '@mui/icons-material'
 import './index.css'
 import Datatable from "@/components/Datatable"
+import apiService from "../../services/api"
+import { toast } from 'react-toastify'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const Approved = () => {
-  // Sample data for approved applications
-  const initialTableData = [
-    { 
-      id: 1, 
-      applicationId: 'APP001', 
-      applicantName: 'John Doe', 
-      documentType: 'Aadhar Card', 
-      approvedDate: 'Jun 10, 25, 06:45 PM', 
-      approvedBy: 'Sarah Verifier',
-      verificationTime: '15 minutes'
-    },
-    { 
-      id: 2, 
-      applicationId: 'APP002', 
-      applicantName: 'Jane Smith', 
-      documentType: 'PAN Card', 
-      approvedDate: 'Jun 10, 25, 05:30 PM', 
-      approvedBy: 'Sarah Verifier',
-      verificationTime: '20 minutes'
-    },
-    { 
-      id: 3, 
-      applicationId: 'APP003', 
-      applicantName: 'Mike Johnson', 
-      documentType: 'Passport', 
-      approvedDate: 'Jun 10, 25, 04:15 PM', 
-      approvedBy: 'Sarah Verifier',
-      verificationTime: '12 minutes'
-    }
-  ];
-
-  const [tabledata, setTabledata] = useState(initialTableData);
+  // State for approved applications
+  const [tabledata, setTabledata] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [modal, setModal] = useState(false);
+  const [selectedApplicationId, setSelectedApplicationId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+
+  const toggle = () => setModal(!modal);
+  
+  // Get current user from Redux store
+  const user = useSelector(state => state.auth.user);
+
+  // Fetch approved applications data
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('auth_token');
+      if (!token) return;
+
+      apiService.setToken(token);
+      
+      // Fetch approved applications
+      const approvedResponse = await apiService.getVerifierApprovedApplications();
+
+      if (approvedResponse.success) {
+        setTabledata(approvedResponse.data);
+      } else {
+        console.error('Failed to fetch approved applications:', approvedResponse.message);
+        toast.error('Failed to fetch approved applications');
+      }
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      toast.error('Error fetching data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch data on component mount
+  useEffect(() => {
+    fetchData();
+    setCurrentUser(user);
+  }, [user]);
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
+  };
+
+  // Handle View Details button click
+  const handleViewClick = (applicationId) => {
+    setSelectedApplicationId(applicationId);
+    toggle();
+  };
+
+  // Handle View Details button click in modal
+  const handleViewDetails = () => {
+    if (selectedApplicationId) {
+      navigate(`/review-application/${selectedApplicationId}`);
+    }
   };
 
   const columns = [
@@ -62,7 +93,7 @@ const Approved = () => {
       headerAlign: 'left',
       renderCell: (data) => (
         <div className="datatable-cell-content">
-          {data.row.applicationId}
+          {data.row.id}
         </div>
       ) 
     },
@@ -98,7 +129,7 @@ const Approved = () => {
       headerAlign: 'left',
       renderCell: (data) => (
         <div className="datatable-cell-content">
-          {data.row.approvedDate}
+          {data.row.reviewedDate || '-'}
         </div>
       ) 
     },
@@ -110,19 +141,19 @@ const Approved = () => {
       headerAlign: 'left',
       renderCell: (data) => (
         <div className="datatable-cell-content">
-          {data.row.approvedBy}
+          {data.row.assigned_verifier_name || '-'}
         </div>
       ) 
     },
     { 
-      field: 'verificationTime', 
-      headerName: 'Verification Time', 
+      field: 'status', 
+      headerName: 'Status', 
       flex: 1, 
-      minWidth: 140,
+      minWidth: 120,
       headerAlign: 'left',
       renderCell: (data) => (
         <div className="datatable-cell-content">
-          {data.row.verificationTime}
+          {data.row.status}
         </div>
       ) 
     },
@@ -140,6 +171,7 @@ const Approved = () => {
             size="small"
             className="action-button"
             startIcon={<CheckCircle />}
+            onClick={() => handleViewClick(data.row.id)}
           >
             View Details
           </Button>
@@ -197,6 +229,18 @@ const Approved = () => {
           pageSize={10}
         />
       </div>
+      
+      <Modal isOpen={modal} toggle={toggle}>
+        <ModalHeader toggle={toggle}>Application Details</ModalHeader>
+        <ModalBody>
+          View the completed application review details.
+        </ModalBody>
+        <ModalFooter>
+          <ButtonStrap color="primary" onClick={handleViewDetails}>
+            View Details
+          </ButtonStrap>{' '}
+        </ModalFooter>
+      </Modal>
     </div>
   );
 };

@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Typography,
   TextField,
@@ -9,71 +10,104 @@ import {
   Divider,
   Button
 } from '@mui/material'
+import { Button as ButtonStrap, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Row, Col } from 'reactstrap'
 import { Search, FilterList } from '@mui/icons-material'
 import './index.css'
 import Datatable from "@/components/Datatable"
+import apiService from "../../services/api"
+import { toast } from 'react-toastify'
+import { useSelector } from 'react-redux'
 
 const VerifierApplications = () => {
   // Sample data for verifier applications
-  const initialTableData = [
-    { 
-      id: 1, 
-      applicationId: 'APP001', 
-      applicantName: 'John Doe', 
-      documentType: 'Aadhar Card', 
-      submittedDate: 'Jun 10, 25, 06:45 PM', 
-      priority: 'High',
-      status: 'Under Review',
-      verifier: 'Sarah Verifier'
-    },
-    { 
-      id: 2, 
-      applicationId: 'APP002', 
-      applicantName: 'Jane Smith', 
-      documentType: 'PAN Card', 
-      submittedDate: 'Jun 10, 25, 05:30 PM', 
-      priority: 'Medium',
-      status: 'Pending',
-      verifier: 'Unassigned'
-    },
-    { 
-      id: 3, 
-      applicationId: 'APP003', 
-      applicantName: 'Mike Johnson', 
-      documentType: 'Passport', 
-      submittedDate: 'Jun 10, 25, 04:15 PM', 
-      priority: 'Low',
-      status: 'Under Review',
-      verifier: 'Sarah Verifier'
-    },
-    { 
-      id: 4, 
-      applicationId: 'APP004', 
-      applicantName: 'Sarah Wilson', 
-      documentType: 'Driving License', 
-      submittedDate: 'Jun 10, 25, 03:20 PM', 
-      priority: 'High',
-      status: 'Pending',
-      verifier: 'Unassigned'
-    },
-    { 
-      id: 5, 
-      applicationId: 'APP005', 
-      applicantName: 'David Brown', 
-      documentType: 'Voter ID', 
-      submittedDate: 'Jun 10, 25, 02:45 PM', 
-      priority: 'Medium',
-      status: 'Under Review',
-      verifier: 'Sarah Verifier'
-    }
-  ];
+  const [tabledata, setTabledata] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [modal, setModal] = useState(false);
+  const [selectedApplicationId, setSelectedApplicationId] = useState(null);
+  const navigate = useNavigate();
 
-  const [tabledata, setTabledata] = useState(initialTableData);
+  const toggle = () => setModal(!modal);  
+  // Get current user from Redux store
+  const user = useSelector(state => state.auth.user);
+
+  // Fetch verifier data
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('auth_token');
+      if (!token) return;
+
+      apiService.setToken(token);
+      
+      // Fetch verifier applications and stats in parallel
+      const applicationsResponse = await apiService.getVerifierApplications();
+
+      if (applicationsResponse.success) {
+        setTabledata(applicationsResponse.data);
+      } else {
+        console.error('Failed to fetch applications:', applicationsResponse.message);
+        toast.error('Failed to fetch applications');
+      }
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      toast.error('Error fetching data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch data on component mount
+  useEffect(() => {
+    fetchData();
+    setCurrentUser(user);
+  }, [user]);
+
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
+  };
+
+  // Handle Review button click
+  const handleReviewClick = async (applicationId) => {
+    try {
+      // First, check if the application is already assigned to this verifier
+      const application = tabledata.find(app => app.id === applicationId);
+      const isAssigned = application?.is_assigned === 'yes';
+      const isAssignedToCurrentUser = application?.assigned_verifier_id === currentUser?.id;
+
+      // If not assigned, auto-assign it to the current verifier
+      if (!isAssigned) {
+        const assignResponse = await apiService.assignApplicationToVerifier(applicationId);
+        
+        if (!assignResponse.success) {
+          toast.error(assignResponse.message || 'Failed to assign application');
+          return;
+        }
+
+        toast.success('Application assigned to you successfully');
+        // Refresh the data to update the assignment status
+        await fetchData();
+      }
+
+      // Store the application ID and open modal
+      setSelectedApplicationId(applicationId);
+      toggle();
+      
+    } catch (error) {
+      console.error('Error handling review click:', error);
+      toast.error('Error processing review request');
+    }
+  };
+
+  // Handle Start Review button click
+  const handleStartReview = () => {
+    if (selectedApplicationId) {
+      navigate(`/review-application/${selectedApplicationId}`);
+    }
   };
 
   const columns = [
@@ -85,7 +119,7 @@ const VerifierApplications = () => {
       headerAlign: 'left',
       renderCell: (data) => (
         <div className="datatable-cell-content">
-          {data.row.applicationId}
+          {data.row.id}
         </div>
       ) 
     },
@@ -162,7 +196,7 @@ const VerifierApplications = () => {
       headerAlign: 'left',
       renderCell: (data) => (
         <div className="datatable-cell-content">
-          {data.row.verifier}
+          {data.row.assigned_verifier_name || 'Not Assigned'}
         </div>
       ) 
     },
@@ -173,17 +207,29 @@ const VerifierApplications = () => {
       minWidth: 120,
       headerAlign: 'left',
       sortable: false,
-      renderCell: (data) => (
-        <div className="datatable-actions">
-          <Button 
-            variant="outlined" 
-            size="small"
-            className="action-button"
-          >
-            Review
-          </Button>
-        </div>
-      ) 
+      renderCell: (data) => {
+        const application = data.row;
+        const isAssigned = application.is_assigned === 'yes';
+        const isAssignedToCurrentUser = application.assigned_verifier_id === currentUser?.id;
+        
+        // Button should be disabled if:
+        // 1. Application is assigned to a different verifier
+        const shouldDisable = isAssigned && !isAssignedToCurrentUser;
+        
+        return (
+          <div className="datatable-actions">
+            <Button 
+              variant="outlined" 
+              size="small"
+              className="action-button"
+              disabled={shouldDisable}
+              onClick={() => handleReviewClick(application.id)}
+            >
+              {shouldDisable ? 'Assigned' : 'Review'}
+            </Button>
+          </div>
+        );
+      } 
     }
   ];
 
@@ -236,6 +282,17 @@ const VerifierApplications = () => {
           pageSize={10}
         />
       </div>
+      <Modal isOpen={modal} toggle={toggle}>
+        <ModalHeader toggle={toggle}>Application Review</ModalHeader>
+        <ModalBody>
+          This application is assigned to you. Please start the review process.
+        </ModalBody>
+        <ModalFooter>
+          <ButtonStrap color="primary" onClick={handleStartReview}>
+           Start Review
+          </ButtonStrap>{' '}
+        </ModalFooter>
+      </Modal>
     </div>
   );
 };

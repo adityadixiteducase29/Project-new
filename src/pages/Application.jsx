@@ -8,14 +8,20 @@ import React, { useState, useEffect } from 'react';
 import Link from '@mui/material/Link';
 import IconButton from '@mui/material/IconButton';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import apiService from '@/services/api';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
 
 const Application = () => {
-  const { token } = useSelector((state) => state.auth);
+  const { token, user } = useSelector((state) => state.auth);
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [applicationToDelete, setApplicationToDelete] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   // Fetch applications from API
   useEffect(() => {
@@ -48,6 +54,43 @@ const Application = () => {
   const handleEditClick = (row) => {
     console.log('Edit clicked for row:', row);
     // Add your edit logic here
+  };
+
+  const handleDeleteClick = (row) => {
+    setApplicationToDelete(row);
+    setDeleteModal(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!applicationToDelete) return;
+
+    try {
+      setDeleting(true);
+      const response = await apiService.deleteApplication(applicationToDelete.id);
+
+      if (response.success) {
+        // Remove the deleted application from the list
+        setApplications(prev => 
+          prev.filter(app => app.id !== applicationToDelete.id)
+        );
+        
+        toast.success(`Application for ${applicationToDelete.applicant_first_name} ${applicationToDelete.applicant_last_name} deleted successfully`);
+        setDeleteModal(false);
+        setApplicationToDelete(null);
+      } else {
+        toast.error(response.message || 'Failed to delete application');
+      }
+    } catch (error) {
+      console.error('Error deleting application:', error);
+      toast.error('Failed to delete application');
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteModal(false);
+    setApplicationToDelete(null);
   };
 
   const cards = [
@@ -139,6 +182,37 @@ const Application = () => {
           </span>
         </div>
       ) 
+    },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      flex: 1,
+      minWidth: 120,
+      headerAlign: 'center',
+      align: 'center',
+      sortable: false,
+      renderCell: (params) => (
+        <div className="datatable-cell-content" style={{ justifyContent: 'center', gap: '8px' }}>
+          <IconButton
+            size="small"
+            onClick={() => handleEditClick(params.row)}
+            title="Edit Application"
+            style={{ color: '#1976d2' }}
+          >
+            <EditOutlinedIcon fontSize="small" />
+          </IconButton>
+          {user?.user_type === 'admin' && (
+            <IconButton
+              size="small"
+              onClick={() => handleDeleteClick(params.row)}
+              title="Delete Application"
+              style={{ color: '#d32f2f' }}
+            >
+              <DeleteOutlineIcon fontSize="small" />
+            </IconButton>
+          )}
+        </div>
+      )
     }
   ];
 
@@ -199,6 +273,65 @@ const Application = () => {
           />
         )}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <Modal isOpen={deleteModal} toggle={handleDeleteCancel} centered>
+        <ModalHeader toggle={handleDeleteCancel}>
+          Confirm Delete Application
+        </ModalHeader>
+        <ModalBody>
+          <div style={{ textAlign: 'center', padding: '20px 0' }}>
+            <div style={{ fontSize: '48px', color: '#d32f2f', marginBottom: '16px' }}>
+              ⚠️
+            </div>
+            <h5 style={{ marginBottom: '16px', color: '#333' }}>
+              Are you sure you want to delete this application?
+            </h5>
+            {applicationToDelete && (
+              <div style={{ 
+                backgroundColor: '#f5f5f5', 
+                padding: '16px', 
+                borderRadius: '8px',
+                marginBottom: '16px'
+              }}>
+                <p style={{ margin: '0 0 8px 0', fontWeight: 'bold' }}>
+                  Applicant: {applicationToDelete.applicant_first_name} {applicationToDelete.applicant_last_name}
+                </p>
+                <p style={{ margin: '0 0 8px 0' }}>
+                  Email: {applicationToDelete.applicant_email}
+                </p>
+                <p style={{ margin: '0 0 8px 0' }}>
+                  Application ID: {applicationToDelete.id}
+                </p>
+                <p style={{ margin: '0', color: '#666' }}>
+                  Status: {applicationToDelete.application_status}
+                </p>
+              </div>
+            )}
+            <p style={{ color: '#666', fontSize: '14px' }}>
+              This action cannot be undone. All associated files, reviews, and data will be permanently deleted.
+            </p>
+          </div>
+        </ModalBody>
+        <ModalFooter style={{ justifyContent: 'center', gap: '12px' }}>
+          <Button 
+            color="secondary" 
+            onClick={handleDeleteCancel}
+            disabled={deleting}
+            style={{ minWidth: '100px' }}
+          >
+            Cancel
+          </Button>
+          <Button 
+            color="danger" 
+            onClick={handleDeleteConfirm}
+            disabled={deleting}
+            style={{ minWidth: '100px' }}
+          >
+            {deleting ? 'Deleting...' : 'Delete'}
+          </Button>
+        </ModalFooter>
+      </Modal>
     </div>
   );
 };
